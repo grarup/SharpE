@@ -1,0 +1,65 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:codeCompletion="clr-namespace:ICSharpCode.AvalonEdit.CodeCompletion;assembly=ICSharpCode.AvalonEdit"
+	xmlns:viewModels="clr-namespace:SharpE.BaseEditors.Json.ViewModels"
+                    xmlns:autoComplete="clr-namespace:SharpE.BaseEditors.Json.ViewModels.AutoComplete">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Colors.xaml"></ResourceDictionary>
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style TargetType="{x:Type ListBoxItem}" x:Key="CompletionListBoxItem">
+        <Setter Property="Foreground" Value="{StaticResource ForgroundBrush}"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <Border Name="Bd"
+					        Background="{StaticResource BackgroundBrush}"
+					        Padding="{TemplateBinding Padding}"
+					        SnapsToDevicePixels="true">
+                        <ContentPresenter 
+							HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+							VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+							SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                    </Border>
+                    <!-- Simplified triggers:
+ 						we don't want a gray selection background when the ListBox doesn't have focus
+					-->
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="true">
+                            <Setter TargetName="Bd" Property="Background"
+							        Value="{StaticResource HighLightBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type codeCompletion:CompletionList}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type codeCompletion:CompletionList}">
+                    <Border BorderThickness="0">
+                        <codeCompletion:CompletionListBox x:Name="PART_ListBox" ItemContainerStyle="{StaticResource CompletionListBoxItem}" Background="{StaticResource BackgroundBrush}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="autoComplete:StringCompletionDataViewModel">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{Binding Image}" Width="16" Height="16" Margin="0,0,2,0"/>
+                                        <ContentPresenter Content="{Binding Content}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </codeCompletion:CompletionListBox>
+                    </Border>
+                </ControlTemplate>
+
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="{x:Type codeCompletion:CompletionWindow}" TargetType="{x:Type codeCompletion:CompletionWindow}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="AllowsTransparency" Value="True" />
+        <Setter Property="WindowStyle" Value="None"></Setter>
+    </Style>
+</ResourceDictionary>

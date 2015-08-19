@@ -1,0 +1,24 @@
+{
+  "id" : "jsoneditor.schema.json",
+  "$schema" : "quickschema.schema.json",
+  "type" : "object",
+  "properties" : {
+		"$schema" : {
+			"type" : "string",
+		},
+    "shortcuts" : {
+      "type" : "array",
+      "items" : {
+        "type" : "object",
+        "properties" : {
+          "gesture" : {
+            "type" : "string"
+          },
+          "command" : {
+            "type" : "string"
+          }
+        }
+      }
+    }
+  }
+}

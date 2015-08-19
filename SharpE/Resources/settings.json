@@ -1,0 +1,32 @@
+{
+	"$schema" : "generalsettings.schema.json",
+	"schemas" :	[
+	],
+	"templates" : [
+	],
+	"converttabs" : true,
+	"tabsize" : 2,
+	"shortcuts" : [
+		{
+			"gesture" : "ctrl+s",
+			"command" : "Save"
+		},
+		{
+			"gesture" : "ctrl+p",
+			"command" : "OpenFileSearch"
+		},
+		{
+			"gesture" : "ctrl+tab",
+			"command" : "ShowSwitchFile",
+		},
+		{
+			"gesture" : "f5",
+			"command" : "Run"
+		}
+	],
+	"editors" : [
+		"QubicleViewer.dll",
+	],
+	"runpath" : "",
+	"runparameters" : "",
+}

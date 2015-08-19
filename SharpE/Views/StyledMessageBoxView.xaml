@@ -1,0 +1,67 @@
+﻿<UserControl x:Class="SharpE.Views.StyledMessageBoxView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:helpers="clr-namespace:SharpE.MvvmTools.Helpers;assembly=MvvmTools"
+             xmlns:converters="clr-namespace:SharpE.MvvmTools.Converters;assembly=MvvmTools"
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="1000" d:DataContext="{d:DesignInstance helpers:MessageBoxViewModel}">
+    <Grid Visibility="{Binding Path=IsShown, Converter={converters:BoolValueConverter}}">
+        <Grid.RowDefinitions>
+            <RowDefinition ></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition ></RowDefinition>
+        </Grid.RowDefinitions>
+        <Border helpers:MouseHelper.MouseUp="{Binding Path=CloseCommand}" Margin="0">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,1" EndPoint="0,0" >
+                    <GradientStop Offset="0" Color="#A000"></GradientStop>
+                    <GradientStop Offset="0.2" Color="#5000"></GradientStop>
+                    <GradientStop Offset="1" Color="#5000"></GradientStop>
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
+        <Border Background="#222" Grid.Row="1" BorderBrush="#AAA" BorderThickness="0,1,0,1">
+            <StackPanel HorizontalAlignment="Stretch">
+                <Border MaxWidth="400" Padding="5">
+                    <Grid MaxWidth="400">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition MinHeight="70"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Border Padding="5" BorderBrush="White" BorderThickness="0,0,0,2">
+                            <StackPanel Orientation="Horizontal">
+                                <ContentPresenter Content="{Binding Path=Icon}" MaxHeight="25" MaxWidth="25" Margin="0,0,5,0"></ContentPresenter>
+                                <TextBlock Text="{Binding Path=Title}" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"></TextBlock>
+                            </StackPanel>
+                        </Border>
+                        <TextBlock Grid.Row="1" Padding="20" TextWrapping="Wrap" Text="{Binding Path=Text}" Foreground="White"></TextBlock>
+                        <ItemsControl ItemsSource="{Binding Path=Buttons}" Grid.Row="2">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Width="100" Content="{Binding Path=Text}" Command="{Binding Path=Command}" CommandParameter="{Binding Path=Result}"></Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </Border>
+        <Border helpers:MouseHelper.MouseUp="{Binding Path=CloseCommand}" Grid.Row="2" Margin="0">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Offset="0" Color="#A000"></GradientStop>
+                    <GradientStop Offset="0.2" Color="#5000"></GradientStop>
+                    <GradientStop Offset="1" Color="#5000"></GradientStop>
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
+    </Grid>
+</UserControl>

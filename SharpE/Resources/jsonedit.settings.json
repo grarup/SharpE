@@ -1,0 +1,25 @@
+{
+	"$schema" : "jsoneditor.schema.json",
+	"shortcuts" : [
+		{		
+			"gesture" : "ctrl+f",
+			"command" : "ShowFind"
+		},
+		{		
+			"gesture" : "ctrl+i",
+			"command" : "IndentAll"
+		},
+		{		
+			"gesture" : "escape",
+			"command" : "HideFind"
+		},
+		{		
+			"gesture" : "ctrl+enter",
+			"command" : "OpenFile"
+		},
+		{
+			"gesture" : "ctrl+space",
+			"command" : "ShowAutoComplete"
+		}
+	],
+}

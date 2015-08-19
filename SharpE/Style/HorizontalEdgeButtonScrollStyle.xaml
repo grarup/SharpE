@@ -1,0 +1,115 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:Common.MedRxCommonControls.Controls;assembly=MvvmTools">
+
+    <Style TargetType="Button" x:Key="LeftButton">
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Margin" Value="2" />
+        <Setter Property="MinHeight" Value="10" />
+        <Setter Property="MinWidth" Value="10" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="Transparent" IsHitTestVisible="True">
+                        <Path Margin="2" Data="M 4 0 L 4 8 L 0 4 Z" x:Name="Arrow" Stretch="Fill">
+                            <Path.Fill>
+                                <SolidColorBrush Color="{StaticResource Forground}"></SolidColorBrush>
+                            </Path.Fill>
+                        </Path>
+                        
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <ColorAnimation Duration="0" To="{StaticResource Between}" Storyboard.TargetName="Arrow" Storyboard.TargetProperty="(Path.Fill).(SolidColorBrush.Color)"></ColorAnimation>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ColorAnimation Duration="0" To="{StaticResource HighLight}" Storyboard.TargetName="Arrow" Storyboard.TargetProperty="(Path.Fill).(SolidColorBrush.Color)"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition To="MouseOver" GeneratedDuration="0:0:0"></VisualTransition>
+                                </VisualStateGroup.Transitions>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Button" x:Key="RightButton">
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Margin" Value="2" />
+        <Setter Property="MinHeight" Value="10" />
+        <Setter Property="MinWidth" Value="10" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid  Background="Transparent" IsHitTestVisible="True">
+                        <Path Margin="2" Data="M 0 0 L 0 8 L 4 4 Z" x:Name="Arrow" Stretch="Fill">
+                            <Path.Fill>
+                                <SolidColorBrush Color="{StaticResource Forground}"></SolidColorBrush>
+                            </Path.Fill>
+                        </Path>
+
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <ColorAnimation Duration="0" To="{StaticResource Between}" Storyboard.TargetName="Arrow" Storyboard.TargetProperty="(Path.Fill).(SolidColorBrush.Color)"></ColorAnimation>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ColorAnimation Duration="0" To="{StaticResource HighLight}" Storyboard.TargetName="Arrow" Storyboard.TargetProperty="(Path.Fill).(SolidColorBrush.Color)"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition To="MouseOver" GeneratedDuration="0:0:0"></VisualTransition>
+                                </VisualStateGroup.Transitions>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type controls:HorizontalEdgeButtonScroll}">
+        <Setter Property="OverridesDefaultStyle" Value="False"></Setter>
+        <Setter Property="MinWidth" Value="30"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ContentControl">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="PART_LeftButton" Style="{StaticResource LeftButton}" Background="{TemplateBinding Background}" Foreground="{TemplateBinding Foreground}">  
+                        </Button>
+                        <Border Grid.Column="1" x:Name="PART_ViewArea" ClipToBounds="True">
+                            <StackPanel Orientation="Horizontal">
+                                <ContentControl x:Name="PART_Content"/>
+                            </StackPanel>
+                        </Border>
+                        <Button x:Name="PART_RightButton" Grid.Column="2" Style="{StaticResource RightButton}" Foreground="{TemplateBinding Foreground}">
+                        </Button>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Color x:Key="Background" R="0x20" G="0x20" B="0x20" A="0xFF"></Color>
+    <Color x:Key="Between" R="0x60" G="0x60" B="0x60" A="0xFF"></Color>
+    <Color x:Key="Forground" R="0xFF" G="0xFF" B="0xFF" A="0xFF"></Color>
+    <Color x:Key="HighLight" R="0x00" G="0x80" B="0xC0" A="0xFF"></Color>
+    <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource Background}"></SolidColorBrush>
+    <SolidColorBrush x:Key="BetweenBrush" Color="{StaticResource Between}"></SolidColorBrush>
+    <SolidColorBrush x:Key="ForgroundBrush" Color="{StaticResource Forground}"></SolidColorBrush>
+    <SolidColorBrush x:Key="HighLightBrush" Color="{StaticResource HighLight}"></SolidColorBrush>    
+</ResourceDictionary>

@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BC812D6A-53CE-4DA3-9685-DED11DFD28CE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SharpE.MvvmTools</RootNamespace>
+    <AssemblyName>MvvmTools</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Collections\AsyncObservableCollection.cs" />
+    <Compile Include="Collections\CastObservableCollection.cs" />
+    <Compile Include="Collections\CollectionElementPropertyObserver.cs" />
+    <Compile Include="Collections\ConverterObservableCollection.cs" />
+    <Compile Include="Collections\FilteredObservableCollection.cs" />
+    <Compile Include="Collections\MergingObservableCollection.cs" />
+    <Compile Include="Collections\MultiMergingObservableCollection.cs" />
+    <Compile Include="Collections\ObservableCollection.cs" />
+    <Compile Include="Collections\ObservableKeyValuePair.cs" />
+    <Compile Include="Collections\ReadOnlyDictionary.cs" />
+    <Compile Include="Collections\SortedObservableCollection.cs" />
+    <Compile Include="Commands\AutoCommand.cs" />
+    <Compile Include="Commands\GenericAutoCommand.cs" />
+    <Compile Include="Commands\GenericManualCommand.cs" />
+    <Compile Include="Commands\ManualCommand.cs" />
+    <Compile Include="Controls\DirectItemsControl.cs" />
+    <Compile Include="Controls\FastListView.cs" />
+    <Compile Include="Controls\HorizontalEdgeButtonScroll.cs" />
+    <Compile Include="Controls\IItemRender.cs" />
+    <Compile Include="Controls\SimpleItemRender.cs" />
+    <Compile Include="Controls\VerticalEdgeButtonScroll.cs" />
+    <Compile Include="Converters\BoolValueConverter.cs" />
+    <Compile Include="Converters\IsTypeValueConverter.cs" />
+    <Compile Include="Converters\EnumBoolConverter.cs" />
+    <Compile Include="Converters\EnumLocalizationConverter.cs" />
+    <Compile Include="Converters\ExpresionConverter.cs" />
+    <Compile Include="Converters\FlipValueConverter.cs" />
+    <Compile Include="Converters\InvertedEnumBoolConverter.cs" />
+    <Compile Include="Converters\KiloValueConverter.cs" />
+    <Compile Include="Converters\StringValueConveter.cs" />
+    <Compile Include="Exstensions\StringExstensions.cs" />
+    <Compile Include="Helpers\BaseDialogViewModel.cs" />
+    <Compile Include="Helpers\BaseOwnerViewModel.cs" />
+    <Compile Include="Helpers\BaseViewModel.cs" />
+    <Compile Include="Helpers\BindableRichTextBox.cs" />
+    <Compile Include="Helpers\IOwnerViewModel.cs" />
+    <Compile Include="Helpers\IViewModel.cs" />
+    <Compile Include="Helpers\IWindowViewModel.cs" />
+    <Compile Include="Helpers\ListViewHelper.cs" />
+    <Compile Include="Helpers\MessageBoxButtonViewModel.cs" />
+    <Compile Include="Helpers\MessageBoxViewModel.cs" />
+    <Compile Include="Helpers\ServiceProvider.cs" />
+    <Compile Include="Helpers\DialogHelper.cs" />
+    <Compile Include="Helpers\DialogViewModel.cs" />
+    <Compile Include="Helpers\FocusHelper.cs" />
+    <Compile Include="Helpers\IBindableRichTextBoxViewModel.cs" />
+    <Compile Include="Helpers\IDialogHelper.cs" />
+    <Compile Include="Helpers\IDialogViewModel.cs" />
+    <Compile Include="Helpers\InputBindingHelper.cs" />
+    <Compile Include="Helpers\KeyboardHelper.cs" />
+    <Compile Include="Helpers\MouseAction.cs" />
+    <Compile Include="Helpers\MouseActionCollection.cs" />
+    <Compile Include="Helpers\MouseHelper.cs" />
+    <Compile Include="Helpers\MvvmTextBox.cs" />
+    <Compile Include="Helpers\NativeMethods.cs" />
+    <Compile Include="Controls\StyledWindow.cs" />
+    <Compile Include="Helpers\ITextInserter.cs" />
+    <Compile Include="Helpers\TextBoxHelper.cs" />
+    <Compile Include="Helpers\TreeViewHelper.cs" />
+    <Compile Include="Helpers\WindowClosingHelper.cs" />
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Definitions\Definitions.csproj">
+      <Project>{8C1B80D3-6045-4AED-8D5D-5FAE0BC125DD}</Project>
+      <Name>Definitions</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

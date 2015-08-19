@@ -1,0 +1,17 @@
+{
+	"$schema" : "basetexteditorsettings.schema.json",
+	"shortcuts" : [
+		{		
+			"gesture" : "ctrl+f",
+			"command" : "ShowFind"
+		},
+		{		
+			"gesture" : "escape",
+			"command" : "HideFind"
+		},
+		{		
+			"gesture" : "ctrl+enter",
+			"command" : "OpenFile"
+		}
+	],
+}

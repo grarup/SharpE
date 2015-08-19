@@ -1,0 +1,54 @@
+﻿<UserControl x:Class="SharpE.QubicleViewer.QubicleView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:helpers="clr-namespace:SharpE.MvvmTools.Helpers;assembly=MvvmTools"
+             xmlns:qubicleViewer="clr-namespace:SharpE.QubicleViewer"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance qubicleViewer:QubicleEditor}"
+             >
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto" MinWidth="200"/>
+        </Grid.ColumnDefinitions>
+        <Viewport3D>
+            <Viewport3D.Camera>
+                <PerspectiveCamera Position="{Binding Path=CameraPos}" LookDirection="{Binding Path=LookDirection}" 
+                         UpDirection="0,0,1" />
+            </Viewport3D.Camera>
+            <ModelVisual3D Content="{Binding Path=Model}">
+            </ModelVisual3D>
+        </Viewport3D>
+        <Grid Background="Transparent" helpers:MouseHelper.MouseScroll="{Binding Path=Scroll}" helpers:MouseHelper.MouseIsDown="{Binding Path=MouseIsDown}" helpers:MouseHelper.MouseMove="{Binding Path=Move}"/>
+        <Border Grid.Column="1" BorderBrush="#666" BorderThickness="1" Padding="5">
+            <StackPanel>
+                <TextBlock Text="Opacity:"/>
+                <Slider Maximum="1" SmallChange="0.05" LargeChange="0.20" Value="{Binding Path=Opacity}"></Slider>
+                <TextBlock Text="Model parts:"/>
+                <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding Path=QbModel.Parts}" Grid.IsSharedSizeScope="True">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" SharedSizeGroup="Name"/>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Path=Name}"/>
+                                        <TextBlock Text="{Binding Path=X}" Margin="2,0"/>
+                                        <TextBlock Text="{Binding Path=Y}" Margin="2,0"/>
+                                        <TextBlock Text="{Binding Path=Z}" Margin="2,0"/>
+                                    </StackPanel>
+                                    <CheckBox Grid.Column="1" IsChecked="{Binding Path=IsVisable}" Margin="10,0,2,0"></CheckBox>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

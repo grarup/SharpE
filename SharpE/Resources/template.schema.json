@@ -1,0 +1,83 @@
+{
+	"$schema" : "quickschema.schema.json",
+	"properties" : {
+		"$schema" : { "type" : "string"},
+		"name" : {
+			"type" : "string"
+		},
+		"parameters" : {
+			"type" : "array",
+			"items" : {
+				"type" : "object",
+				"properties" : {
+					"name" : {
+						"type" : "string",
+						"autoComplet" : {
+							"type" : "key",
+							"targetkey" : "template.name"
+						}
+					},
+					"type" : {
+						"type" : "string",
+						"enum" : ["string", "file"]
+					},
+					"isreadonly" : {
+						"type" : "boolean",
+					},
+					"default" : {
+						"type" : "string"
+					},
+					"key" : {
+						"type" : "string"
+					},
+					"pathseparator" : {
+						"type" : "string",
+					}
+				},
+				"required" : ["name", "type"]				
+			}
+		},
+		"commands" : {
+			"type" : "array",
+			"items" : {
+				"type" : "object",
+				"properties" : {
+					"type" : {
+						"type" : "string",
+						"enum" : ["copy", "createfolder", "replace", "insert", "injectjson"]
+					},
+					"source" : {
+						"type" : "string",
+						"autoComplet" : {
+							"type" : "key",
+							"sourcekey" : "template.name"
+						}
+					},
+					"target" : {
+						"type" : "string",
+						"autoComplet" : {
+							"type" : "key",
+							"sourcekey" : "template.name"
+						}
+					},
+					"findstring"					:{
+						"type" : "string"
+					},
+					"valuestring" :{
+						"type" : "string"
+					},
+					"condition" : {
+						"type" : "string",
+						"enum" : ["none", "doesnotexsist"]
+					},
+					"pathseparator" : {
+						"type" : "string",
+						"maxLength" : 1,
+						"minLength" : 1,
+					},
+				},
+				"required" : ["type"]
+			}
+		}
+	}
+}

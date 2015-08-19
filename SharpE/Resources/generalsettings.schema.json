@@ -1,0 +1,66 @@
+{
+	"id" : "generalsettings.schema.json",
+	"$schema" : "quickschema.schema.json",
+	"properties" : {
+		"$schema" : {
+			"type" : "string",
+		},
+		"schemas" : {
+			"type" : "array",
+			"items" : {
+				"type" : "string",
+				"autoComplet" : {
+					"type" : "fileabsolute"
+				}
+			}
+		},
+		"templates" : {
+			"type" : "array",
+			"items" : {
+				"type" : "string",
+				"autoComplet" : {
+					"type" : "fileabsolute",
+				}
+			}
+		}, 
+			
+		
+		"converttabs" : {
+			"type" : "boolean",
+		},
+		"tabsize" : {
+			"type" : "integer",
+		},
+		"shortcuts" :
+		{
+			"type" : "array",
+			"items" :   
+			{	
+				"type" : "object",
+				"properties" : {				
+					"gesture" : {
+						"type" : "string"
+					},
+					"command" : {
+						"type" : "string",
+						"type" : "string",
+						"enum" : ["Save", "OpenFileSearch", "ShowSwitchFile", "Run"]
+					}
+				},
+				"required" : ["gesture", "command"]
+			}
+		},
+		"editors" : {
+			"type" : "array",
+			"items" : {
+				"type" : "string",
+			}
+		},	
+"runpath"		: {
+	"type" : "string"
+},
+"runparameters" : {
+	"type" : "string"
+}
+	}
+}
