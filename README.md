@@ -2,7 +2,7 @@
 
 ##Overview
  #E is an open editor. The backbone of the editor is  [AvalonEdit](http://avalonedit.net/) 
-It was developed to edit json files and to validate the against a json schema.
+It was developed to edit json files and to validate against a json schema.
 
 #Status
 The project is still under development though somewhat functionally.
