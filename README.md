@@ -8,3 +8,7 @@ It was developed to edit json files and to validate the against a json schema.
 The project is still under development though somewhat functionally.
 First milestone is to get it in a good enough stat that i can be 
 used for [StoneHearth](http://stonehearth.net) mod development.
+
+#Planed features
+Planed features can be found on [trello](https://trello.com/b/Dpol0wqT/planed-features)
+
