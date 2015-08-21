@@ -3,7 +3,7 @@
 ##Overview
  #E is an open editor. The backbone of the editor is  [AvalonEdit](http://avalonedit.net/) 
 It was developed to edit json files and to validate against a json schema.
-
+![sceenshot](https://github.com/grarup/SharpE/blob/master/Images/Screenshot.png)
 ##Status
 The project is still under development though somewhat functionally.
 First milestone is to get it in a good enough stat that i can be 
