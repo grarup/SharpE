@@ -1,0 +1,41 @@
+{
+	"$schema": "arraytest.schema.json",
+	"array2To4" : [
+		"b",
+		"c",
+		"d"
+	],
+	"array2To4" : [
+		"c",
+		"d"
+	],
+		"array2To4" : [
+		"a",
+		"b",
+		"c",
+		"d"
+	],
+	"array2To4" : [
+		"a",
+	],
+	"array2To4" : [
+		"a",
+		"b",
+		"c",
+		"d"
+		"e"
+	],
+	"arrayInt" : [ 1],
+	"arrayInt" : [ 
+		"string",
+		1.0,
+		{},
+		[]
+	],
+	"arrayIntOrString" : [
+		1,
+		"string",
+		{}
+	]	
+
+}

@@ -1,0 +1,12 @@
+{
+	"$schema": "combinationtest.schema.json",
+	"all" : "peter",
+	"all" : 1,
+	"all" : "peter grarup",
+	"any" : 1,
+	"any" :  "string",
+	"any" : {},
+	"any" : [],
+	"one" : 10,
+	"one" : 15,
+}

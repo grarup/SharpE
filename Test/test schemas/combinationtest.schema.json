@@ -1,0 +1,28 @@
+{
+	"$schema" : "schema.schema.json",
+	"properties" : {
+		"$schema" : {
+			"description" : "the schema used for the file",
+			"type" :"string"
+		},	
+		"all" : {
+			"allOf" : [
+				{ "type" : "string"  },
+				{ "maxLength" : 5
+				}
+			]
+		},
+		"any" : {
+			"anyOf" : [
+				{ "type" : "string"	},
+				{ "type" : "integer" }
+			]
+		},
+		"one" : {
+			"oneOf" : [
+				{ "type" : "number", "multipleOf" : 5},
+				{ "type" : "number", "multipleOf" : 3}
+			]
+		}
+	}
+}  

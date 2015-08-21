@@ -1,0 +1,60 @@
+{
+	"id": "test..schema.json",
+	"$schema": "schema.schema.json",
+	"description": "Core schema meta-schema",
+	"type": "object",
+	"properties": {
+		"$schema" : {
+			"description" : "the schema used for the file",
+			"type" :"string"
+		},
+		"int" : {
+			"description" : "A integer between 0 and 10",
+			"type" : "integer",
+			"minimum" : 0,
+			"maximum" : 10
+		},
+		"float": {
+			"description" : "A float that has to be between -1.5 and 1.5",
+			"type" : "number",
+			"minimum" : -1.5,
+			"maximum" : 1.5
+		},
+		"intExclusiv" : {
+			"description" : "A integer between 0 and 10",
+			"type" : "integer",
+			"minimum" :  0,
+			"maximum" : 10,
+			"exclusiveMinimum" : true,
+			"exclusiveMaximum" : true
+		},
+		"floatExclusiv": {
+			"description" : "A float that has to be between -1.5 and 1.5",
+			"type" : "number",
+			"minimum" : -1.5,
+			"maximum" : 1.5,
+			"exclusiveMinimum" : true,
+			"exclusiveMaximum" : true
+		},
+		"string" : {
+			"description" : "A string with length between 5 and 10",
+			"type" : "string",
+			"minLength" :  5,
+			"maxLength" : 10,
+		},
+		"pattern" : {
+			"description" : "A string with fitting ^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$",
+			"type" : "string",
+			"pattern" : "^(\([0-9]{3}\))?[0-9]{3}-[0-9]{4}$"
+		},
+		"bool": {
+			"description" : "A boolean",
+			"type" : "boolean",
+		},
+		"enum" : {
+			"description" : "Color must be blue, red or yellow",
+			"type" : "string",
+			"enum" : [ "blue", "red", "yellow"]
+		},
+	},
+}

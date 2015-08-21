@@ -1,0 +1,33 @@
+{
+	"$schema": "objecttest.schema.json",
+	"object2To5" : {
+		"float" : 1,
+		"int" : 1,
+	},   
+	"object2To5" : {
+		"float" : 1,
+	},
+	"object2To5" : {
+		"float" : 1,
+		"float" : 1,
+		"float" : 1,
+		"float" : 1,
+		"float" : 1,
+		"float" : 1,
+	},
+	"objectRequire" : {
+		"int" : 1
+	},
+	"objectRequire" : {
+		"float" : 1
+	},
+	"objectAdditionalProp" : {
+		"test" : "string",
+		"test" : 1,
+	},
+	"objectPatternProperties" : {
+		"S_" : "string",
+		"I_" : "string",
+		"S_" : 1
+	},
+}

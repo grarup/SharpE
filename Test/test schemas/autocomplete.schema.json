@@ -1,0 +1,34 @@
+{
+	"$schema" : "quickschema.schema.json",
+	"type" : "object",
+	"properties" : {
+		"$schema" : { "type" : "string"},
+		"filerelative" : {
+			"description" : "Relative file with inside file({0})",
+			"type" : "string",
+			"autoComplet" : {
+				"type" : "filerelative",
+				"prefix" : "file(",
+				"suffix" : ")",
+				"pathseperator" : "/"
+			}
+		},
+		"fileabsolute" : {
+			"description" : "Absolute file with prefix file://",
+			"type" : "string",
+			"autoComplet" : {
+				"type" : "fileabsolute",
+				"prefix" : "file://",
+				"filter" : ".+\\.json"
+			}
+		},
+		"testfile" : {
+			"description" : "Relative file that contains the word test",
+			"type" : "string",
+			"autoComplet" : {
+				"type" : "filerelative",
+				"filter" : ".*test.*"
+			}
+		},
+	}
+}

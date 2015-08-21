@@ -1,0 +1,48 @@
+{
+	"id": "test..schema.json",
+	"$schema": "schema.schema.json",
+	"description": "Core schema meta-schema",
+	"type": "object",
+	"properties": {
+		"$schema" : {
+			"description" : "the schema used for the file",
+			"type" :"string"
+		},
+		"object2To5" : {
+			"description" : "A object with only number properties.
+			Need 2 to 5 properties.",
+			"type" : "object",
+			"minProperties" : 2,
+			"maxProperties" : 5,
+			"additionalProperties" : {
+				"type" : "number"
+			},
+		},
+		"objectRequire" : {
+			"description" : "A object with only int and float properties.
+			Requires a propertie 'int'",
+			"type" : "object",
+			"properties" : {
+				"int" : {
+					"type" : "integer"
+				},
+				"float" : {
+					"type" : "number"
+				}
+			},
+			"required" : ["int"],
+		}, 
+		"objectAdditionalProp" :  {
+			"description" : "An object with only string properties",
+			"type" : "object",
+			"additionalProperties" : { "type" : "string" }
+		},
+		"objectPatternProperties" : {
+			"description" : "An object only with properties that start with S_ of type string.",
+			"type" : "object",
+			"patternProperties" : {
+				"^S_" : {"type" : "string"}
+			}
+		},
+	},
+}

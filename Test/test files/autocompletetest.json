@@ -1,0 +1,4 @@
+{
+	"$schema": "autocomplete.schema.json",
+	"filerelative" : "file(../testfiles/arraytest.json)"
+}

@@ -1,0 +1,35 @@
+{
+	"id": "test..schema.json",
+	"$schema": "schema.schema.json",
+	"description": "Core schema meta-schema",
+	"type": "object",
+	"properties": {
+		"$schema" : {
+			"description" : "the schema used for the file",
+			"type" :"string"
+		},
+		"array2To4" : {
+			"type" : "array",
+			"minItems" : 2,
+			"maxItems" : 4
+		},
+		"arrayInt" : {
+			"type" : "array",
+			"items" : 
+			{
+				"type" : "integer"
+			}
+		},
+		"arrayIntOrString" : {
+			"type" : "array",
+			"items" : [
+				{
+					"type" : "integer"
+				},
+				{
+					"type" : "string"
+				},
+			]
+		}
+	},
+}
