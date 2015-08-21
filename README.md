@@ -12,3 +12,6 @@ used for [StoneHearth](http://stonehearth.net) mod development.
 ##Planed features
 Planed features can be found on [trello](https://trello.com/b/Dpol0wqT/planed-features)
 
+##Help
+Look in the [wiki](https://github.com/grarup/SharpE/wiki)
+
