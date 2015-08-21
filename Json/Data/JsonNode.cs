@@ -125,7 +125,7 @@ namespace SharpE.Json.Data
 
     public T GetObjectOrDefault<T>(string key, T def)
     {
-      JsonElement item = m_list.FirstOrDefault(n => n.Key.ToLower() == key.ToLower());
+      JsonElement item = m_list.FirstOrDefault(n => n.Key != null && n.Key.ToLower() == key.ToLower());
       if (item == null)
         return def;
       JsonValue jsonValue = item.Value as JsonValue;

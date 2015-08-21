@@ -99,8 +99,13 @@ namespace SharpE.Templats
                   if (refTemplateParameter != null)
                   {
                     string path = Path.GetDirectoryName(refTemplateParameter.Value);
-                    if (path != null && value.Length > path.Length + 1)
-                      value = value.Substring(path.Length + 1);
+                    if (path != null)
+                    {
+                      if (value.Length > path.Length + 1)
+                        value = value.Substring(path.Length + 1);
+                      else if (value.Length == path.Length + 1)
+                          value = "";
+                    }
                   }
                   else
                   {
