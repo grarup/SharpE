@@ -1,4 +1,5 @@
 {
+	"id" : "template.schema.json",
 	"$schema" : "quickschema.schema.json",
 	"properties" : {
 		"$schema" : { "type" : "string"},

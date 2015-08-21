@@ -349,7 +349,7 @@ namespace SharpE.Json.AutoComplet
                   List<char> startChars = new List<char> { schemaObject.AutoCompletePathSeperator };
                   if (schemaObject.Prefix.Length > 0)
                     startChars.Add(schemaObject.Prefix.Last());
-                  int indexPathStart = offset == 0 ? 0 : text.LastIndexOfAny(startChars.ToArray(), offset - 1, offset - 1) + 1;
+                  int indexPathStart = offset == 0 ? 0 : text.LastIndexOfAny(startChars.ToArray(), Math.Min(offset - 1, text.Length - 1)) + 1;
                   if (indexPathStart < 0)
                     indexPathStart = 0;
                   int indexQuatStrat = schemaObject.Prefix.Length;
@@ -386,7 +386,7 @@ namespace SharpE.Json.AutoComplet
                   List<char> startChars = new List<char> { schemaObject.AutoCompletePathSeperator, };
                   if (schemaObject.Prefix.Length > 0)
                     startChars.Add(schemaObject.Prefix.Last());
-                  int indexPathStart = offset == 0 ? 0 : (text.LastIndexOfAny(startChars.ToArray(), offset - 1, offset - 1) + 1);
+                  int indexPathStart = offset == 0 ? 0 : (text.LastIndexOfAny(startChars.ToArray(), Math.Min(offset - 1, text.Length - 1)) + 1);
                   int indexQuatStrat = schemaObject.Prefix.Length;
                   if (indexQuatStrat < indexPathStart)
                     value = schemaObject.Prefix + text.Substring(indexQuatStrat, indexPathStart - indexQuatStrat) +

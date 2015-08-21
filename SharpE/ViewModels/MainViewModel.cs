@@ -396,7 +396,7 @@ namespace SharpE.ViewModels
     {
       if (file == null)
         return;
-      if (!m_openfiles.Any(n => n.Path == file.Path))
+      if (file.Path == null || !m_openfiles.Any(n => n.Path == file.Path))
       {
         file.FileChangedOnDisk += FileOnFileChangedOnDisk;
         m_openfiles.Add(file);

@@ -1,5 +1,5 @@
 {
-	"id": "test..schema.json",
+	"id": "simpletesttype.schema.json",
 	"$schema": "schema.schema.json",
 	"description": "Core schema meta-schema",
 	"type": "object",
@@ -45,7 +45,7 @@
 		"pattern" : {
 			"description" : "A string with fitting ^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$",
 			"type" : "string",
-			"pattern" : "^(\([0-9]{3}\))?[0-9]{3}-[0-9]{4}$"
+			"pattern" : "^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$"
 		},
 		"bool": {
 			"description" : "A boolean",
