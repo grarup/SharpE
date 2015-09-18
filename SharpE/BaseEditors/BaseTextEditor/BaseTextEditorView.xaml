@@ -19,6 +19,13 @@
         <Grid Background="#222">
             <avalonEdit:TextEditor x:Name="TextEditor" Background="Transparent" Foreground="White" helpers:FocusHelper.FocusTag="{x:Static baseTextEditor:EditFocusTag.Editor}" helpers:FocusHelper.CurrentFocusTag="{Binding Path=FocusTag}" 
                                    FontSize="{Binding ElementName=EditorFontSize, Path=SelectedItem.Content}" HorizontalScrollBarVisibility="Auto">
+                <avalonEdit:TextEditor.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Command="Cut"></MenuItem>
+                        <MenuItem Command="Copy"></MenuItem>
+                        <MenuItem Command="Paste"></MenuItem>
+                    </ContextMenu>
+                </avalonEdit:TextEditor.ContextMenu>
             </avalonEdit:TextEditor>
 
         </Grid>
