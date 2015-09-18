@@ -44,7 +44,7 @@ namespace SharpE.ViewModels
     private readonly GenericManualCommand<IFileViewModel> m_openFileViewModelCommand;
     private readonly ManualCommand m_openFileCommand;
     private readonly ManualCommand m_newFileCommand;
-    private readonly GenericManualCommand<FileViewModel> m_closeFileCommand;
+    private readonly GenericManualCommand<IFileViewModel> m_closeFileCommand;
     private readonly ManualCommand m_openFolderCommand;
     private readonly ManualCommand m_saveFileCommand;
     private readonly ManualCommand m_changeSettingsPathCommand;
@@ -84,7 +84,7 @@ namespace SharpE.ViewModels
     public MainViewModel()
     {
       m_tabTrees = Enum.GetValues(typeof(TabTrees)).Cast<TabTrees>().ToList();
-      m_closeFileCommand = new GenericManualCommand<FileViewModel>(CloseFile);
+      m_closeFileCommand = new GenericManualCommand<IFileViewModel>(CloseFile);
       m_saveFileCommand = new ManualCommand(Save, () => m_selectedFile != null && m_selectedFile.HasUnsavedChanges);
       m_saveAllFilesCommand = new ManualCommand(SaveAll, () => m_openfiles.Any(n => n.HasUnsavedChanges));
       m_openFileViewModelCommand = new GenericManualCommand<IFileViewModel>(file => OpenFile(file));
@@ -367,7 +367,7 @@ namespace SharpE.ViewModels
 
     private void SaveOnCloseMessageBoxReply(MessageBoxResult arg1, object[] arg2)
     {
-      FileViewModel file = (FileViewModel)arg2[0];
+      IFileViewModel file = (IFileViewModel)arg2[0];
       switch (arg1)
       {
         case MessageBoxResult.Yes:
@@ -481,10 +481,10 @@ namespace SharpE.ViewModels
     {
       JsonNode root = new JsonNode();
       JsonArray openFiles = new JsonArray();
-      foreach (FileViewModel fileViewModel in m_openfiles.Where(n => n.Path != null))
+      foreach (IFileViewModel fileViewModel in m_openfiles.Where(n => n.Path != null))
         openFiles.Add(fileViewModel.Path);
       root.Add(new JsonElement("openfiles", openFiles));
-      if (m_selectedFile != null)
+      if (m_selectedFile != null && m_selectedFile.Path != null)
         root.Add(new JsonElement("selectedFile", m_selectedFile.Path));
       StreamWriter streamWriter = File.CreateText(Properties.Settings.Default.SettingPath + "\\openFiles.json");
       streamWriter.Write(root.ToString());
@@ -502,6 +502,8 @@ namespace SharpE.ViewModels
       string selectedFilePath = jsonNode.GetObjectOrDefault<string>("selectedFile", null);
       foreach (JsonValue jsonValue in openFiles)
         OpenFile((string) jsonValue.Value, (string) jsonValue.Value == selectedFilePath);
+      if (m_selectedFile == null && m_openfiles.Count > 0)
+        m_selectedFile = m_openfiles.First();
     }
 
     #endregion
@@ -546,7 +548,6 @@ namespace SharpE.ViewModels
           CloseFile(fileViewModel);
       }
     }
-
 
     public void ShowSwitchFile()
     {
@@ -614,6 +615,14 @@ namespace SharpE.ViewModels
       {
         m_dialogHelper.ShowMessageBox("Save failed!", "Could not save:\r\n" + e.Message);
       }
+    }
+
+    public void FindInFile()
+    {
+      if (!m_openfiles.Contains(m_editorManager.FindInFilesViewModel))
+        m_openfiles.Add(m_editorManager.FindInFilesViewModel);
+      m_editorManager.FindInFilesViewModel.TreeNode = m_root;
+      SelectedFile = m_editorManager.FindInFilesViewModel;
     }
     #endregion
 

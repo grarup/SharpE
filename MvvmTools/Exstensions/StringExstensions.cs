@@ -41,5 +41,19 @@ namespace SharpE.MvvmTools.Exstensions
     {
       return text.Replace("\t", "").Replace("\r", "").Replace("\n", "");
     }
+
+    public static int LineNumber(this string text, int pos)
+    {
+      return text.Take(pos).Count(c => c == '\n') + 1;
+    }
+
+    public static string Line(this string text, int pos)
+    {
+      int startIndex = text.LastIndexOf('\n', pos) + 1;
+      int stopIndex = text.IndexOf('\n', pos) - 1;
+      if (startIndex >= stopIndex)
+        return null;
+      return text.Substring(startIndex, stopIndex - startIndex);
+    }
   }
 }

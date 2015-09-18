@@ -8,7 +8,6 @@ using SharpE.BaseEditors.Json.ViewModels;
 using SharpE.Definitions.Editor;
 using SharpE.Definitions.Project;
 using SharpE.Json.Data;
-using SharpE.ViewModels.Tree;
 
 namespace SharpE.ViewModels
 {
@@ -19,6 +18,7 @@ namespace SharpE.ViewModels
     private readonly IEditor m_simpleEditor;
     private readonly JsonEditorViewModel m_jsonEditorViewModel;
     private readonly ImageViewerViewModel m_imageViewerViewModel;
+    private readonly FindInFilesViewModel m_findInFilesViewModel;
 
     public EditorManager(IFileViewModel setting, MainViewModel mainViewModel)
     {
@@ -26,6 +26,7 @@ namespace SharpE.ViewModels
       m_imageViewerViewModel = new ImageViewerViewModel();
       m_jsonEditorViewModel = new JsonEditorViewModel(mainViewModel);
       m_simpleEditor = new BaseTextEditorViewModel(mainViewModel);
+      m_findInFilesViewModel = new FindInFilesViewModel(mainViewModel);
 
       UpdateSettings();
       m_setting.ContentChanged += SettingOnContentChanged;
@@ -41,6 +42,7 @@ namespace SharpE.ViewModels
       m_editors.Clear();
       m_editors.Add(m_imageViewerViewModel);
       m_editors.Add(m_jsonEditorViewModel);
+      m_editors.Add(m_findInFilesViewModel);
       m_editors.Add(m_simpleEditor);
 
       JsonException jsonException;
@@ -60,6 +62,11 @@ namespace SharpE.ViewModels
     public List<IEditor> Editors
     {
       get { return m_editors; }
+    }
+
+    public FindInFilesViewModel FindInFilesViewModel
+    {
+      get { return m_findInFilesViewModel; }
     }
 
     public IEditor GetEditor(string fileExstension)
