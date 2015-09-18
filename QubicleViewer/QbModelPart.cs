@@ -27,8 +27,10 @@ namespace SharpE.QubicleViewer
     private bool m_isVisable = true;
     private double m_opacity = 1.0;
     private EmissiveMaterial m_hideMaterial;
+    private double m_scale = 0.1;
+    private const double c_blocksize = 0.5;
 
-    public QbModelPart(uint width, uint height, uint depth, int x, int y, int z, string name)
+    public QbModelPart(uint width, uint height, uint depth, int x, int y, int z, string name, double scale)
     {
       m_width = width;
       m_height = height;
@@ -36,6 +38,7 @@ namespace SharpE.QubicleViewer
       m_x = x;
       m_y = y;
       m_z = z;
+      m_scale = scale;
       m_name = name ?? "<no name>";
       m_qubes = new Qube[width * height * depth];
     }
@@ -78,10 +81,10 @@ namespace SharpE.QubicleViewer
           if (qube.Mask.Contains(QubeSideMask.Bottom))
           {
             Vector3D normal = new Vector3D(0, 0, 1);
-            int index1 = Add(Offset(point, -0.5, -0.5, -0.5), normal, point3DCollection, vector3DCollection);
-            int index2 = Add(Offset(point, -0.5, 0.5, -0.5), normal, point3DCollection, vector3DCollection);
-            int index3 = Add(Offset(point, 0.5, 0.5, -0.5), normal, point3DCollection, vector3DCollection);
-            int index4 = Add(Offset(point, 0.5, -0.5, -0.5), normal, point3DCollection, vector3DCollection);
+            int index1 = Add(Offset(point, -c_blocksize, -c_blocksize, -c_blocksize), normal, point3DCollection, vector3DCollection);
+            int index2 = Add(Offset(point, -c_blocksize, c_blocksize, -c_blocksize), normal, point3DCollection, vector3DCollection);
+            int index3 = Add(Offset(point, c_blocksize, c_blocksize, -c_blocksize), normal, point3DCollection, vector3DCollection);
+            int index4 = Add(Offset(point, c_blocksize, -c_blocksize, -c_blocksize), normal, point3DCollection, vector3DCollection);
             int32Collection.Add(index1);
             int32Collection.Add(index2);
             int32Collection.Add(index3);
@@ -92,10 +95,10 @@ namespace SharpE.QubicleViewer
           if (qube.Mask.Contains(QubeSideMask.Top))
           {
             Vector3D normal = new Vector3D(0, 0, 1);
-            int index1 = Add(Offset(point, -0.5, -0.5, 0.5), normal, point3DCollection, vector3DCollection);
-            int index2 = Add(Offset(point, -0.5, 0.5, 0.5), normal, point3DCollection, vector3DCollection);
-            int index3 = Add(Offset(point, 0.5, 0.5, 0.5), normal, point3DCollection, vector3DCollection);
-            int index4 = Add(Offset(point, 0.5, -0.5, 0.5), normal, point3DCollection, vector3DCollection);
+            int index1 = Add(Offset(point, -c_blocksize, -c_blocksize, c_blocksize), normal, point3DCollection, vector3DCollection);
+            int index2 = Add(Offset(point, -c_blocksize, c_blocksize, c_blocksize), normal, point3DCollection, vector3DCollection);
+            int index3 = Add(Offset(point, c_blocksize, c_blocksize, c_blocksize), normal, point3DCollection, vector3DCollection);
+            int index4 = Add(Offset(point, c_blocksize, -c_blocksize, c_blocksize), normal, point3DCollection, vector3DCollection);
             int32Collection.Add(index1);
             int32Collection.Add(index3);
             int32Collection.Add(index2);
@@ -106,10 +109,10 @@ namespace SharpE.QubicleViewer
           if (qube.Mask.Contains(QubeSideMask.Right))
           {
             Vector3D normal = new Vector3D(-1, 0, 0);
-            int index1 = Add(Offset(point, -0.5, -0.5, -0.5), normal, point3DCollection, vector3DCollection);
-            int index2 = Add(Offset(point, -0.5, -0.5, 0.5), normal, point3DCollection, vector3DCollection);
-            int index3 = Add(Offset(point, -0.5, 0.5, 0.5), normal, point3DCollection, vector3DCollection);
-            int index4 = Add(Offset(point, -0.5, 0.5, -0.5), normal, point3DCollection, vector3DCollection);
+            int index1 = Add(Offset(point, -c_blocksize, -c_blocksize, -c_blocksize), normal, point3DCollection, vector3DCollection);
+            int index2 = Add(Offset(point, -c_blocksize, -c_blocksize, c_blocksize), normal, point3DCollection, vector3DCollection);
+            int index3 = Add(Offset(point, -c_blocksize, c_blocksize, c_blocksize), normal, point3DCollection, vector3DCollection);
+            int index4 = Add(Offset(point, -c_blocksize, c_blocksize, -c_blocksize), normal, point3DCollection, vector3DCollection);
             int32Collection.Add(index1);
             int32Collection.Add(index2);
             int32Collection.Add(index3);
@@ -120,10 +123,10 @@ namespace SharpE.QubicleViewer
           if (qube.Mask.Contains(QubeSideMask.Left))
           {
             Vector3D normal = new Vector3D(1, 0, 0);
-            int index1 = Add(Offset(point, 0.5, -0.5, -0.5), normal, point3DCollection, vector3DCollection);
-            int index2 = Add(Offset(point, 0.5, -0.5, 0.5), normal, point3DCollection, vector3DCollection);
-            int index3 = Add(Offset(point, 0.5, 0.5, 0.5), normal, point3DCollection, vector3DCollection);
-            int index4 = Add(Offset(point, 0.5, 0.5, -0.5), normal, point3DCollection, vector3DCollection);
+            int index1 = Add(Offset(point, c_blocksize, -c_blocksize, -c_blocksize), normal, point3DCollection, vector3DCollection);
+            int index2 = Add(Offset(point, c_blocksize, -c_blocksize, c_blocksize), normal, point3DCollection, vector3DCollection);
+            int index3 = Add(Offset(point, c_blocksize, c_blocksize, c_blocksize), normal, point3DCollection, vector3DCollection);
+            int index4 = Add(Offset(point, c_blocksize, c_blocksize, -c_blocksize), normal, point3DCollection, vector3DCollection);
             int32Collection.Add(index1);
             int32Collection.Add(index3);
             int32Collection.Add(index2);
@@ -134,10 +137,10 @@ namespace SharpE.QubicleViewer
           if (qube.Mask.Contains(QubeSideMask.Back))
           {
             Vector3D normal = new Vector3D(0, 1, 0);
-            int index1 = Add(Offset(point, -0.5, 0.5, -0.5), normal, point3DCollection, vector3DCollection);
-            int index2 = Add(Offset(point, -0.5, 0.5, 0.5), normal, point3DCollection, vector3DCollection);
-            int index3 = Add(Offset(point, 0.5, 0.5, 0.5), normal, point3DCollection, vector3DCollection);
-            int index4 = Add(Offset(point, 0.5, 0.5, -0.5), normal, point3DCollection, vector3DCollection);
+            int index1 = Add(Offset(point, -c_blocksize, c_blocksize, -c_blocksize), normal, point3DCollection, vector3DCollection);
+            int index2 = Add(Offset(point, -c_blocksize, c_blocksize, c_blocksize), normal, point3DCollection, vector3DCollection);
+            int index3 = Add(Offset(point, c_blocksize, c_blocksize, c_blocksize), normal, point3DCollection, vector3DCollection);
+            int index4 = Add(Offset(point, c_blocksize, c_blocksize, -c_blocksize), normal, point3DCollection, vector3DCollection);
             int32Collection.Add(index1);
             int32Collection.Add(index2);
             int32Collection.Add(index3);
@@ -148,10 +151,10 @@ namespace SharpE.QubicleViewer
           if (qube.Mask.Contains(QubeSideMask.Front))
           {
             Vector3D normal = new Vector3D(0, -1, 0);
-            int index1 = Add(Offset(point, -0.5, -0.5, -0.5), normal, point3DCollection, vector3DCollection);
-            int index2 = Add(Offset(point, -0.5, -0.5, 0.5), normal, point3DCollection, vector3DCollection);
-            int index3 = Add(Offset(point, 0.5, -0.5, 0.5), normal, point3DCollection, vector3DCollection);
-            int index4 = Add(Offset(point, 0.5, -0.5, -0.5), normal, point3DCollection, vector3DCollection);
+            int index1 = Add(Offset(point, -c_blocksize, -c_blocksize, -c_blocksize), normal, point3DCollection, vector3DCollection);
+            int index2 = Add(Offset(point, -c_blocksize, -c_blocksize, c_blocksize), normal, point3DCollection, vector3DCollection);
+            int index3 = Add(Offset(point, c_blocksize, -c_blocksize, c_blocksize), normal, point3DCollection, vector3DCollection);
+            int index4 = Add(Offset(point, c_blocksize, -c_blocksize, -c_blocksize), normal, point3DCollection, vector3DCollection);
             int32Collection.Add(index1);
             int32Collection.Add(index3);
             int32Collection.Add(index2);
@@ -212,7 +215,7 @@ namespace SharpE.QubicleViewer
         DiffuseMaterial material = new DiffuseMaterial(new SolidColorBrush(color) {Opacity = m_isVisable ? Opacity : 0}) ;
         geometryModel3D.Material = material;
         m_materials.Add(material);
-
+        geometryModel3D.Transform = new ScaleTransform3D(Scale,Scale,Scale);
         Geometry.Add(geometryModel3D);
       }
       
@@ -326,6 +329,21 @@ namespace SharpE.QubicleViewer
         if (value.Equals(m_opacity)) return;
         m_opacity = value;
         UpdateOpacity();
+        OnPropertyChanged();
+      }
+    }
+
+    public double Scale
+    {
+      get { return m_scale; }
+      set
+      {
+        if (value.Equals(m_scale)) return;
+        m_scale = value;
+        foreach (GeometryModel3D geometryModel3D in m_geometry)
+        {
+          geometryModel3D.Transform = new ScaleTransform3D(m_scale, m_scale, m_scale);
+        }
         OnPropertyChanged();
       }
     }

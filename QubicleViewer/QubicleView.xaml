@@ -26,6 +26,8 @@
             <StackPanel>
                 <TextBlock Text="Opacity:"/>
                 <Slider Maximum="1" SmallChange="0.05" LargeChange="0.20" Value="{Binding Path=Opacity}"></Slider>
+                <TextBlock Text="{Binding Path=QbModel.Scale, StringFormat=Scale: {0} }"/>
+                <Slider Minimum="0.01" Maximum="5" SmallChange="0.01" LargeChange="0.1" Value="{Binding Path=QbModel.Scale}"></Slider>
                 <TextBlock Text="Model parts:"/>
                 <ScrollViewer HorizontalScrollBarVisibility="Auto">
                     <ItemsControl ItemsSource="{Binding Path=QbModel.Parts}" Grid.IsSharedSizeScope="True">

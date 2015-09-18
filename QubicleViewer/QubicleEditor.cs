@@ -239,7 +239,7 @@ namespace SharpE.QubicleViewer
           m_qbModel.Zoom = m_zoom;
           m_qbModel.AngleXaxis = m_angleXaxis;
           m_qbModel.AngleZaxis = m_angleZaxis;
-          m_qbModel.Center = Center;
+          m_qbModel.PropertyChanged -= QbModelOnPropertyChanged;
         }
         m_qbModel = value;
         if (m_qbModel != null)
@@ -248,11 +248,23 @@ namespace SharpE.QubicleViewer
           m_zoom = m_qbModel.Zoom;
           m_angleXaxis = m_qbModel.AngleXaxis;
           m_angleZaxis = m_qbModel.AngleZaxis;
-          Center = m_qbModel.Center;
+          m_center = m_qbModel.Center;
           UpdateCamera();
           Model = m_qbModel.Model3DGroup;
+          m_qbModel.PropertyChanged += QbModelOnPropertyChanged;
         }
         OnPropertyChanged();
+      }
+    }
+
+    private void QbModelOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+    {
+      switch (propertyChangedEventArgs.PropertyName)
+      {
+        case "Scale":
+          m_center = m_qbModel.Center;
+          UpdateCamera();
+          break;
       }
     }
 
@@ -301,7 +313,9 @@ namespace SharpE.QubicleViewer
 
     private void ScrollHandler(int scroll)
     {
-      m_zoom += scroll / 20.0;
+      m_zoom += m_zoom/10*(scroll > 0 ? 1 : -1); //scroll / (20.0);
+      if (m_zoom < 1)
+        m_zoom = 1;
       UpdateCamera();
     }
 

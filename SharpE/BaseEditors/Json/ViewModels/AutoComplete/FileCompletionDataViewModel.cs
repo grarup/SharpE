@@ -39,7 +39,7 @@ namespace SharpE.BaseEditors.Json.ViewModels.AutoComplete
           completionSegment = new SelectionSegment(indexQuotStart, indexQuatEnd);
       }
       int endOffset = completionSegment.Offset + Text.Length;
-      textArea.Document.Replace(completionSegment, Text + m_autoCompleteValue.SchemaObject.Suffix);
+      textArea.Document.Replace(completionSegment, (Text + m_autoCompleteValue.SchemaObject.Suffix).Replace("\\", "\\\\"));
       m_jsonEditorViewModel.Caret.Offset = endOffset;
       string value = m_autoCompleteValue.SchemaObject.RemovePrefixAndSuffix(m_jsonEditorViewModel.GetCurrentValue());
       if (Text.StartsWith(".." + m_autoCompleteValue.SchemaObject.AutoCompletePathSeperator) && value.Any(char.IsLetterOrDigit))

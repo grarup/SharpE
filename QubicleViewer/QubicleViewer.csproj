@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="BoundaryBox.cs" />
     <Compile Include="EditorCreator.cs" />
+    <Compile Include="Ground.cs" />
     <Compile Include="MeshExtensions.cs" />
     <Compile Include="QbModelPart.cs" />
     <Compile Include="Properties\Annotations.cs" />

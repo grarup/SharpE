@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using System.Windows.Threading;
+using SharpE.MvvmTools.Properties;
 
 namespace SharpE.QubicleViewer
 {
-  public class QbModel
+  public class QbModel : INotifyPropertyChanged
   {
     private readonly List<QbModelPart> m_parts = new List<QbModelPart>();
     private Model3DGroup m_model3DGroup;
@@ -19,6 +22,8 @@ namespace SharpE.QubicleViewer
     private Point3D m_center = new Point3D(19, 0, 5);
     private double m_angleZaxis = 0.75;
     private double m_angleXaxis = -0.5;
+    private double m_scale = 0.1;
+    private Ground m_ground;
 
     public QbModel(byte[] array)
     {
@@ -61,7 +66,7 @@ namespace SharpE.QubicleViewer
         int posZ = binaryReader.ReadInt32();
 
         // create matrix and add to matrix list
-        QbModelPart matrix = new QbModelPart(sizeX, sizeY, sizeZ, posX, posY, posZ, name);
+        QbModelPart matrix = new QbModelPart(sizeX, sizeY, sizeZ, posX, posY, posZ, name, Scale);
         m_parts.Add(matrix);
 
         uint x, y, z;
@@ -146,13 +151,23 @@ namespace SharpE.QubicleViewer
     public double Zoom
     {
       get { return m_zoom; }
-      set { m_zoom = value; }
+      set
+      {
+        if (value.Equals(m_zoom)) return;
+        m_zoom = value;
+        OnPropertyChanged();
+      }
     }
 
     public Point3D Center
     {
       get { return m_center; }
-      set { m_center = value; }
+      set
+      {
+        if (value.Equals(m_center)) return;
+        m_center = value;
+        OnPropertyChanged();
+      }
     }
 
     public double AngleZaxis
@@ -165,6 +180,23 @@ namespace SharpE.QubicleViewer
     {
       get { return m_angleXaxis; }
       set { m_angleXaxis = value; }
+    }
+
+    public double Scale
+    {
+      get { return m_scale; }
+      set
+      {
+        if (m_scale == value) return;
+        m_scale = value;
+        foreach (QbModelPart qbModelPart in m_parts)
+        {
+          qbModelPart.Scale = m_scale;
+        }
+        m_ground.Scale = m_scale;
+        Center = DeterminCenter();
+        OnPropertyChanged();
+      }
     }
 
     public void CalcMesh()
@@ -219,12 +251,22 @@ namespace SharpE.QubicleViewer
       //double depth = m_parts.Max(n => n.Depth);
       //boundaryBox = new BoundaryBox(new Point3D(-0.5, -0.5, -0.5), new Point3D(width - 0.5, depth - 0.5, height - 0.5), Colors.Goldenrod);
       //m_model3DGroup.Children.Add(boundaryBox.GeometryModel3D);
+
+      double maxX = m_parts.Max(n => n.Max.X) + 1;
+      double maxY = m_parts.Max(n => n.Max.Y) + 1;
+      double minX = m_parts.Min(n => n.Min.X);
+      double minY = m_parts.Min(n => n.Min.Y);
+      m_ground = new Ground((int) minX, (int) maxX, (int) minY, (int) maxY, Scale);
+      foreach (GeometryModel3D geometryModel3D in m_ground.GeometryModel3D)
+      {
+        m_model3DGroup.Children.Add(geometryModel3D);
+      }
     }
 
     public double GuesZoom()
     {
       double max = m_parts.Max(n => Math.Max(n.Width, n.Height));
-      return max * 3;
+      return max * 3 * m_scale;
     }
 
 
@@ -236,8 +278,16 @@ namespace SharpE.QubicleViewer
       double minX = m_parts.Min(n => n.Min.X);
       double minY = m_parts.Min(n => n.Min.Y);
       double minZ = m_parts.Min(n => n.Min.Z);
-      return new Point3D(minX + ((maxX - minX) / 2), minY + ((maxY - minY) / 2), minZ + ((maxZ - minZ) / 2));
+      return new Point3D((minX + ((maxX - minX) / 2)) * m_scale, (minY + ((maxY - minY) / 2)) * m_scale, (minZ + ((maxZ - minZ) / 2)) * m_scale);
     }
 
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    [NotifyPropertyChangedInvocator]
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+      PropertyChangedEventHandler handler = PropertyChanged;
+      if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+    }
   }
 }
