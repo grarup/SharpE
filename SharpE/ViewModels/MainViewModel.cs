@@ -78,6 +78,8 @@ namespace SharpE.ViewModels
     private TabsContextMenuViewModel m_tabsContextMenuViewModel;
     private string m_runPath;
     private string m_runParameters;
+    private IEditor m_editor;
+
     #endregion
 
     #region constructor
@@ -708,9 +710,9 @@ namespace SharpE.ViewModels
           if (m_fileUseOrder.Contains(m_selectedFile))
             m_fileUseOrder.Remove(m_selectedFile);
           m_fileUseOrder.Insert(0, m_selectedFile);
-          IEditor editor = EditorManager.GetEditor(m_selectedFile.Exstension);
-          EditorView = editor.View;
-          editor.File = m_selectedFile;
+          m_editor = EditorManager.GetEditor(m_selectedFile.Exstension);
+          EditorView = Editor.View;
+          Editor.File = m_selectedFile;
           m_selectedFile.PropertyChanged += SelectedFileOnPropertyChanged;
         }
         else
@@ -921,6 +923,11 @@ namespace SharpE.ViewModels
     public ICommand DeleteSelectedNodeCommand
     {
       get { return m_deleteSelectedNodeCommand; }
+    }
+
+    public IEditor Editor
+    {
+      get { return m_editor; }
     }
 
     #endregion

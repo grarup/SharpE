@@ -38,6 +38,7 @@
   <ItemGroup>
     <Compile Include="Editor\IEditor.cs" />
     <Compile Include="Editor\IEditorCreator.cs" />
+    <Compile Include="Editor\ITextEditor.cs" />
     <Compile Include="Project\IFileViewModel.cs" />
     <Compile Include="Collection\IObservableCollection.cs" />
     <Compile Include="Collection\IObservableEnumerable.cs" />

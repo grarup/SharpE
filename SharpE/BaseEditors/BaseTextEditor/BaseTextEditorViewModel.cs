@@ -26,7 +26,7 @@ using SharpE.ViewModels.Tree;
 
 namespace SharpE.BaseEditors.BaseTextEditor
 {
-  internal class BaseTextEditorViewModel : IEditor, IDisposable
+  internal class BaseTextEditorViewModel : ITextEditor, IDisposable
   {
     protected readonly MainViewModel m_mainViewModel;
     protected BaseTextEditorView m_view;
@@ -195,6 +195,12 @@ namespace SharpE.BaseEditors.BaseTextEditor
     public IEnumerable<string> SupportedFiles
     {
       get { return m_supportedFiles; }
+    }
+
+    public void JumpToLine(int lineNumber)
+    {
+      m_caret.Line = lineNumber;
+      m_view.TextEditor.ScrollToLine(lineNumber);
     }
 
     public TextDocument TextDocument

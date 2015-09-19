@@ -33,7 +33,7 @@ namespace SharpE.ViewModels
     private readonly IEnumerable<string> m_supportedFiles = new[] { "searchresult" };
     private CancellationTokenSource m_cancellationTokenSource;
     private readonly List<Task> m_tasks = new List<Task>();
-    private readonly List<string> m_extenisionToIgnore = new List<string> {".qb", ".png"};
+    private readonly List<string> m_extenisionToIgnore = new List<string>();
     private string m_searchFile;
 
     public FindInFilesViewModel(MainViewModel mainViewModel)
@@ -41,14 +41,47 @@ namespace SharpE.ViewModels
       m_mainViewModel = mainViewModel;
       m_findCommand = new ManualCommand(Find);
       m_jumpCommand = new ManualCommand(Jump);
+      mainViewModel.Settings.ContentChanged += SettingsOnContentChanged;
+      SettingsOnContentChanged(mainViewModel.Settings);
+    }
+
+    private void SettingsOnContentChanged(IFileViewModel fileViewModel)
+    {
+      m_extenisionToIgnore.Clear();
+      JsonException jsonException;
+      JsonNode settings = JsonHelperFunctions.Parse(fileViewModel.GetContent<string>(), out jsonException) as JsonNode;
+      if (jsonException != null || settings == null)
+        return;
+      JsonArray jsonArray = settings.GetObjectOrDefault<JsonArray>("filesToExcludeFromFileSearch", null);
+      if (jsonArray != null)
+      {
+        foreach (object o in jsonArray)
+        {
+          m_extenisionToIgnore.Add(o.ToString());
+        }
+      }
     }
 
     private void Jump()
     {
+      DocumentLine fileLine = m_editor.Document.GetLineByOffset(m_editor.CaretOffset);
+      while (!m_editor.Document.GetText(fileLine).StartsWith("File") && fileLine.LineNumber > 0)
+        fileLine = fileLine.PreviousLine;
       DocumentLine line = m_editor.Document.GetLineByOffset(m_editor.CaretOffset);
-      while (!m_editor.Document.GetText(line).StartsWith("File") && line.LineNumber > 0)
-        line = line.PreviousLine;
-      m_mainViewModel.OpenFile(m_editor.Document.GetText(line).Substring(6));
+      if (!line.Equals(fileLine))
+      {
+        string text = m_editor.Document.GetText(line);
+        Regex regex = new Regex(@"   (\d*)", RegexOptions.IgnoreCase);
+        Match match = regex.Match(text);
+        if (!match.Success)
+          return;
+        m_mainViewModel.OpenFile(m_editor.Document.GetText(fileLine).Substring(6));
+        ITextEditor textEditor = m_mainViewModel.Editor as ITextEditor;
+        if (textEditor != null)
+          textEditor.JumpToLine(Convert.ToInt32(match.Groups[1].Captures[0].Value));
+      }
+      else
+        m_mainViewModel.OpenFile(m_editor.Document.GetText(fileLine).Substring(6));
     }
 
     protected override FrameworkElement GenerateView()

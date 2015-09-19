@@ -23,8 +23,6 @@
 				}
 			}
 		}, 
-			
-		
 		"converttabs" : {
 			"type" : "boolean",
 		},
@@ -44,7 +42,7 @@
 					"command" : {
 						"type" : "string",
 						"type" : "string",
-						"enum" : ["Save", "OpenFileSearch", "ShowSwitchFile", "Run"]
+						"enum" : ["Save", "OpenFileSearch", "ShowSwitchFile", "Run", "FindInFile"]
 					}
 				},
 				"required" : ["gesture", "command"]
@@ -56,11 +54,18 @@
 				"type" : "string",
 			}
 		},	
-"runpath"		: {
-	"type" : "string"
-},
-"runparameters" : {
-	"type" : "string"
-}
+		"filesToExcludeFromFileSearch" :
+		{
+			"type" : "array",
+			"items" : {
+				"type" : "string"
+			}
+		},
+		"runpath"		: {
+			"type" : "string"
+		},
+		"runparameters" : {
+			"type" : "string"
+		}
 	}
 }
