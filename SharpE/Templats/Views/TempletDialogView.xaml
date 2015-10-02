@@ -41,7 +41,7 @@
                                         </TextBox.InputBindings>
                                     </TextBox>
                                     <TextBlock Grid.Column="1" Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Path=IsEditable, Converter={converters:BoolValueConverter}, ConverterParameter=false}"></TextBlock>
-                                    <Popup IsOpen="{Binding Path=ShowAutoComplete}" PlacementTarget="{Binding ElementName=Value}" Placement="Bottom" Height="150">
+                                    <Popup IsOpen="{Binding Path=ShowAutoComplete}" PlacementTarget="{Binding ElementName=Value}" Placement="Bottom" Height="150" StaysOpen="False">
                                         <Border BorderBrush="{StaticResource BetweenBrush}" BorderThickness="1" Padding="2">
                                             <ListView Focusable="False" ItemsSource="{Binding Path=AutoCompletValues}" SelectedIndex="{Binding Path=AutoCompleteIndex}" ScrollViewer.VerticalScrollBarVisibility="Visible" MinWidth="150" 
                                                       helpers:ListViewHelper.AutoScrollToSelectedItem="True" helpers:MouseHelper.MouseDoubleClick="{Binding Path=SelectAutoCompleteCommand}">
@@ -90,7 +90,7 @@
         </Border>
         <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
             <Button Content="Run" Command="{Binding Path=RunCommand}" Width="80"></Button>
-            <Button Content="Cancel" Command="{Binding Path=CloseCommand}" Width="80"></Button>
+            <Button Content="Close" Command="{Binding Path=CloseCommand}" Width="80"></Button>
         </StackPanel>
     </Grid>
 </UserControl>

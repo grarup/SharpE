@@ -10,7 +10,7 @@
         <KeyBinding Gesture="Ctrl+Tab" Command="{Binding Path=SwitchFileCommand}" CommandParameter="-1"></KeyBinding>
         <KeyBinding Gesture="Ctrl+Shift+Tab" Command="{Binding Path=SwitchFileCommand}" CommandParameter="1"></KeyBinding>
     </UserControl.InputBindings>
-    <Grid MinWidth="400">
+    <Grid MinWidth="700">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -19,7 +19,7 @@
         <Border BorderBrush="{StaticResource BetweenBrush}" BorderThickness="0,0,0,2" Margin="0,5">
             <TextBlock Text="{Binding Path=SelectedFile.Name}" FontWeight="Bold"></TextBlock>
         </Border>
-        <ListView Grid.Row="1" ItemsSource="{Binding Path=Files}" SelectedItem="{Binding Path=SelectedFile}" DisplayMemberPath="Name" x:Name="ListView" Margin="5" Height="300">
+        <ListView Grid.Row="1" ItemsSource="{Binding Path=Files}" SelectedItem="{Binding Path=SelectedFile}" DisplayMemberPath="Name" x:Name="ListView" Margin="5" Height="300" Background="Transparent">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel Orientation="Vertical"></WrapPanel>

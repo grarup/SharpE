@@ -305,9 +305,9 @@ namespace SharpE.ViewModels
     {
       if (!Directory.Exists(Properties.Settings.Default.SettingPath))
         Directory.CreateDirectory(Properties.Settings.Default.SettingPath);
-      m_treeNodes.Add(Tree.TabTrees.Settings, new DirectoryViewModel(Properties.Settings.Default.SettingPath));
       if (!File.Exists(Properties.Settings.Default.SettingPath + "\\settings.json"))
         File.WriteAllBytes(Properties.Settings.Default.SettingPath + "\\settings.json", Properties.Resources.settings);
+      m_treeNodes.Add(Tree.TabTrees.Settings, new DirectoryViewModel(Properties.Settings.Default.SettingPath));
       Settings = m_treeNodes[Tree.TabTrees.Settings].GetFile(Properties.Settings.Default.SettingPath + "\\settings.json");
 
       m_schemaManager = new SchemaManager(m_settings);
@@ -733,7 +733,7 @@ namespace SharpE.ViewModels
         if (value == m_selectedTabTree) return;
         m_selectedTabTree = value;
         Root = m_treeNodes[m_selectedTabTree];
-        CurrentTreeContextMenu = m_treeContextMenus[m_selectedTabTree];
+        CurrentTreeContextMenu = m_treeContextMenus.ContainsKey(m_selectedTabTree) ? m_treeContextMenus[m_selectedTabTree] : null;
         OnPropertyChanged();
       }
     }

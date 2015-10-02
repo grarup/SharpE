@@ -4,7 +4,7 @@
         <Setter Property="SnapsToDevicePixels" Value="true" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Focusable" Value="False"></Setter>
-        <Setter Property="Foreground" Value="{StaticResource ForgroundBrush}"></Setter>
+        <Setter Property="Foreground" Value="#FFFF"></Setter>
     </Style>
     
 </ResourceDictionary>

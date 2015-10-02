@@ -226,8 +226,8 @@ namespace SharpE.Json.AutoComplet
         {
           m_collections[keyValuePair.Key].Remove(keyValuePair.Value);
         }
+        dictionary.Clear();
       }
-      dictionary.Clear();
       Regex scheamRegex = new Regex(@"""\$schema""\s*\:\s*""(.*)""", RegexOptions.IgnoreCase);
       Match match = scheamRegex.Match(fileViewModel.GetContent<string>());
       Schema schema = match.Success ? m_schemaManager.GetSchema(match.Groups[1].ToString()) : null;

@@ -1,7 +1,9 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using SharpE.Definitions.Collection;
 using SharpE.MvvmTools.Collections;
 using SharpE.MvvmTools.Commands;
@@ -23,6 +25,14 @@ namespace SharpE.Templats.ViewModels
       m_showCloseButton = false;
       m_runCommand = new ManualCommand(Run);
       m_browseForFileCommand = new GenericManualCommand<TemplateParameterViewModel>(BrowseForFile);
+      m_canClose = CloseAutoComplete;
+    }
+
+    private bool CloseAutoComplete()
+    {
+      foreach (TemplateParameterViewModel templateParameterViewModel in m_parameters)
+        templateParameterViewModel.ShowAutoComplete = false;
+      return true;
     }
 
     protected override FrameworkElement GenerateView()
