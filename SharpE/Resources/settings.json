@@ -22,6 +22,10 @@
 		{
 			"gesture" : "f5",
 			"command" : "Run"
+		},
+		{
+			"gesture" : "ctrl+shift+f",
+			"command" : "FindInFile"
 		}
 	],
 	"editors" : [
