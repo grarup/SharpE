@@ -383,8 +383,18 @@ namespace SharpE.BaseEditors.Json.ViewModels
         }
         if (textCompositionEventArgs.Text == "\"" && m_text != null && m_text.Length > m_offset && m_text[m_offset] != '\"' && !IsBetweenQoats)
         {
-          m_textDocument.Insert(m_offset, "\"");
-          m_caret.Offset--;
+          SchemaObject schemaObject;
+          if (m_schema != null && (schemaObject = m_schema.GetSchemaObject(m_path)) != null && schemaObject.AutoCompleteTargetKey == null)
+          {
+            m_textDocument.Insert(m_offset, "\"" + schemaObject.Prefix + schemaObject.Suffix + "\"");
+            m_caret.Offset -= 1 + schemaObject.Suffix.Length;
+            textCompositionEventArgs.Handled = true;
+          }
+          else
+          {
+            m_textDocument.Insert(m_offset, "\"");
+            m_caret.Offset--;
+          }
         }
 
         if (textCompositionEventArgs.Text == "\n" && m_offset > 0 && m_text != null && m_offset < m_text.Length && ((m_text[m_offset - 1] == '{' && 

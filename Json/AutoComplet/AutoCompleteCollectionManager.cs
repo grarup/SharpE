@@ -347,14 +347,12 @@ namespace SharpE.Json.AutoComplet
                 if (endQuatPosition != offset)
                 {
                   List<char> startChars = new List<char> { schemaObject.AutoCompletePathSeperator };
-                  if (schemaObject.Prefix.Length > 0)
-                    startChars.Add(schemaObject.Prefix.Last());
-                  int indexPathStart = offset == 0 ? 0 : text.LastIndexOfAny(startChars.ToArray(), Math.Min(offset - 1, text.Length - 1)) + 1;
-                  if (indexPathStart < 0)
-                    indexPathStart = 0;
-                  int indexQuatStrat = schemaObject.Prefix.Length;
-                  if (indexQuatStrat < indexPathStart)
-                    value = schemaObject.Prefix + text.Substring(indexQuatStrat, indexPathStart - indexQuatStrat) +
+                  int indexPathEnd = offset == 0 ? 0 : text.LastIndexOfAny(startChars.ToArray(), Math.Min(offset - 1, text.Length - 1)) + 1;
+                  if (indexPathEnd < 0)
+                    indexPathEnd = 0;
+                  int indexPathStart = schemaObject.Prefix.Length;
+                  if (indexPathStart < indexPathEnd)
+                    value = schemaObject.Prefix + text.Substring(indexPathStart, indexPathEnd - indexPathStart) +
                             schemaObject.Suffix;
                   else
                     value = schemaObject.Prefix + schemaObject.Suffix;

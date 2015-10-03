@@ -27,7 +27,7 @@
     <ProductName>#E</ProductName>
     <PublisherName>grarup</PublisherName>
     <SuiteName>SharpE</SuiteName>
-    <ApplicationRevision>6</ApplicationRevision>
+    <ApplicationRevision>7</ApplicationRevision>
     <ApplicationVersion>0.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
