@@ -172,7 +172,7 @@ namespace SharpE.BaseEditors.Json.ViewModels
     {
       if (!System.IO.File.Exists(Properties.Settings.Default.SettingPath + "\\jsonedit.settings.json"))
         System.IO.File.WriteAllBytes(Properties.Settings.Default.SettingPath + "\\jsonedit.settings.json", Properties.Resources.jsonedit_settings);
-      return new FileViewModel(Properties.Settings.Default.SettingPath + "\\jsonedit.settings.json");
+      return m_mainViewModel.GetSetting(Properties.Settings.Default.SettingPath + "\\jsonedit.settings.json");
     }
 
     public void IndentAll()

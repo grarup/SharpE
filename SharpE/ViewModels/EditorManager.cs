@@ -5,16 +5,21 @@ using System.Reflection;
 using SharpE.BaseEditors.BaseTextEditor;
 using SharpE.BaseEditors.Image;
 using SharpE.BaseEditors.Json.ViewModels;
+using SharpE.Definitions.Collection;
 using SharpE.Definitions.Editor;
 using SharpE.Definitions.Project;
 using SharpE.Json.Data;
+using SharpE.MvvmTools.Collections;
 
 namespace SharpE.ViewModels
 {
   public class EditorManager
   {
     private readonly IFileViewModel m_setting;
-    private readonly List<IEditor> m_editors = new List<IEditor>();
+    private readonly IObservableCollection<IEditor> m_baseEditors = new ObservableCollection<IEditor>();
+    private readonly IObservableCollection<IEditor> m_editorsWithSettings;
+    private readonly IObservableCollection<IEditor> m_usedEditors = new ObservableCollection<IEditor>();
+    private readonly List<IEditor> m_allEditors = new List<IEditor>();
     private readonly IEditor m_simpleEditor;
     private readonly JsonEditorViewModel m_jsonEditorViewModel;
     private readonly ImageViewerViewModel m_imageViewerViewModel;
@@ -22,6 +27,7 @@ namespace SharpE.ViewModels
 
     public EditorManager(IFileViewModel setting, MainViewModel mainViewModel)
     {
+      m_editorsWithSettings = new FilteredObservableCollection<IEditor>(m_baseEditors, editor => editor.Settings != null);
       m_setting = setting;
       m_imageViewerViewModel = new ImageViewerViewModel();
       m_jsonEditorViewModel = new JsonEditorViewModel(mainViewModel);
@@ -39,11 +45,11 @@ namespace SharpE.ViewModels
 
     private void UpdateSettings()
     {
-      m_editors.Clear();
-      m_editors.Add(m_imageViewerViewModel);
-      m_editors.Add(m_jsonEditorViewModel);
-      m_editors.Add(m_findInFilesViewModel);
-      m_editors.Add(m_simpleEditor);
+      m_baseEditors.Clear();
+      m_baseEditors.Add(m_imageViewerViewModel);
+      m_baseEditors.Add(m_jsonEditorViewModel);
+      m_baseEditors.Add(m_findInFilesViewModel);
+      m_baseEditors.Add(m_simpleEditor);
 
       JsonException jsonException;
       JsonNode jsonNode = (JsonNode) JsonHelperFunctions.Parse(m_setting.GetContent<string>(), out jsonException);
@@ -55,13 +61,13 @@ namespace SharpE.ViewModels
       {
         IEditor editor = LoadEditor((string) path.Value);
         if (editor != null)
-          m_editors.Add(editor);
+          m_baseEditors.Add(editor);
       }
     }
 
-    public List<IEditor> Editors
+    public IObservableCollection<IEditor> BaseEditors
     {
-      get { return m_editors; }
+      get { return m_baseEditors; }
     }
 
     public FindInFilesViewModel FindInFilesViewModel
@@ -69,9 +75,14 @@ namespace SharpE.ViewModels
       get { return m_findInFilesViewModel; }
     }
 
+    public IObservableCollection<IEditor> EditorsWithSettings
+    {
+      get { return m_editorsWithSettings; }
+    }
+
     public IEditor GetEditor(string fileExstension)
     {
-      return Editors.FirstOrDefault(n => n.SupportedFiles.Contains(fileExstension)) ?? m_simpleEditor;
+      return m_baseEditors.FirstOrDefault(n => n.SupportedFiles.Contains(fileExstension)) ?? m_simpleEditor;
     }
 
     private IEditor LoadEditor(string path)

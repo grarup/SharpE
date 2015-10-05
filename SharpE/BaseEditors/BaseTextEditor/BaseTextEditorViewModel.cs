@@ -404,7 +404,7 @@ namespace SharpE.BaseEditors.BaseTextEditor
     {
       if (!System.IO.File.Exists(Properties.Settings.Default.SettingPath + "\\basetesteditor.settings.json"))
         System.IO.File.WriteAllBytes(Properties.Settings.Default.SettingPath + "\\basetesteditor.settings.json", Properties.Resources.basetesteditor_settings);
-      return new FileViewModel(Properties.Settings.Default.SettingPath + "\\basetesteditor.settings.json");
+      return m_mainViewModel.GetSetting(Properties.Settings.Default.SettingPath + "\\basetesteditor.settings.json");
     }
 
     private void FindNext()

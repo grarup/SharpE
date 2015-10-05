@@ -1,13 +1,10 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using SharpE.Definitions;
 using SharpE.Definitions.Collection;
 using SharpE.Definitions.Project;
 using SharpE.MvvmTools.Commands;
 using SharpE.MvvmTools.Helpers;
-using SharpE.Views;
 using SharpE.Views.Dialogs;
 
 namespace SharpE.ViewModels.Dialogs
@@ -16,14 +13,14 @@ namespace SharpE.ViewModels.Dialogs
   {
     private readonly IObservableCollection<IFileViewModel> m_files;
     private IFileViewModel m_selectedFile;
-    private readonly MainViewModel m_mainViewModel;
+    private readonly EditorLayoutViewModel m_layout;
     private readonly GenericManualCommand<int> m_switchFileCommand;
 
 
-    public FileSwitchDialogViewModel(MainViewModel mainViewModel, IObservableCollection<IFileViewModel> files )
+    public FileSwitchDialogViewModel(EditorLayoutViewModel layout)
     {
-      m_mainViewModel = mainViewModel;
-      m_files = files;
+      m_layout = layout;
+      m_files = m_layout.FileUseOrder;
       m_switchFileCommand = new GenericManualCommand<int>(SwitchFile, null, Converter);
       m_showCloseButton = false;
     }
@@ -77,7 +74,7 @@ namespace SharpE.ViewModels.Dialogs
         }
         else
         {
-          m_mainViewModel.SelectedFile = m_selectedFile;
+          m_layout.SelectedFile = m_selectedFile;
         }
       }
     }

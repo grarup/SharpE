@@ -27,7 +27,7 @@
     <ProductName>#E</ProductName>
     <PublisherName>grarup</PublisherName>
     <SuiteName>SharpE</SuiteName>
-    <ApplicationRevision>7</ApplicationRevision>
+    <ApplicationRevision>8</ApplicationRevision>
     <ApplicationVersion>0.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -137,6 +137,7 @@
     <Compile Include="ViewModels\Dialogs\FileSwitchDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\ReloadFilesDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\ReloadFileViewModel.cs" />
+    <Compile Include="ViewModels\EditorLayoutViewModel.cs" />
     <Compile Include="ViewModels\FindInFilesViewModel.cs" />
     <Compile Include="ViewModels\KeyboardBindingGenerator.cs" />
     <Compile Include="ViewModels\Dialogs\FolderBrowserDialogViewModel.cs" />
@@ -163,6 +164,9 @@
     </Compile>
     <Compile Include="Views\Dialogs\FileSwitchView.xaml.cs">
       <DependentUpon>FileSwitchView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EditorLayoutView.xaml.cs">
+      <DependentUpon>EditorLayoutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\FindInFilesView.xaml.cs">
       <DependentUpon>FindInFilesView.xaml</DependentUpon>
@@ -235,6 +239,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Dialogs\FileSwitchView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EditorLayoutView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

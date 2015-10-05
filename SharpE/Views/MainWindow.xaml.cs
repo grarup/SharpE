@@ -14,9 +14,6 @@ namespace SharpE.Views
       DataContext = new MainViewModel();
     }
 
-    private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
-    {
-      Popup.IsOpen = !Popup.IsOpen;
-    }
+
   }
 }
