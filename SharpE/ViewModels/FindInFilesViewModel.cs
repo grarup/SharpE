@@ -76,7 +76,7 @@ namespace SharpE.ViewModels
         if (!match.Success)
           return;
         m_mainViewModel.OpenFile(m_editor.Document.GetText(fileLine).Substring(6));
-        ITextEditor textEditor = m_mainViewModel.Editor as ITextEditor;
+        ITextEditor textEditor = m_mainViewModel.LayoutManager.ActiveLayoutElement.Editor as ITextEditor;
         if (textEditor != null)
           textEditor.JumpToLine(Convert.ToInt32(match.Groups[1].Captures[0].Value));
       }

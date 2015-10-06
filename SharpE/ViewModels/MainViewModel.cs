@@ -8,30 +8,28 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
-using SharpE.Definitions.Collection;
 using SharpE.Definitions.Editor;
 using SharpE.Definitions.Project;
 using SharpE.Json.AutoComplet;
 using SharpE.Json.Data;
 using SharpE.Json.Schemas;
-using SharpE.MvvmTools.Collections;
 using SharpE.MvvmTools.Commands;
 using SharpE.MvvmTools.Helpers;
 using SharpE.Templats;
 using SharpE.Templats.ViewModels;
 using SharpE.ViewModels.ContextMenu;
 using SharpE.ViewModels.Dialogs;
+using SharpE.ViewModels.Layout;
 using SharpE.ViewModels.Tree;
 
 namespace SharpE.ViewModels
 {
   public class MainViewModel : BaseOwnerViewModel
   {
-    #region
+    #region declerations
     private string m_path;
-    private UIElement m_editorView;
-    private IObservableCollection<EditorLayoutViewModel> m_layouts = new ObservableCollection<EditorLayoutViewModel>();
-    private EditorLayoutViewModel m_activeLayout;
+
+    private readonly LayoutManager m_layoutManager;
 
     private TabTrees m_selectedTabTree;
     private readonly List<TabTrees> m_tabTrees;
@@ -73,20 +71,20 @@ namespace SharpE.ViewModels
     private AutoCompleteCollectionManager m_autoCompleteCollectionManager;
     private string m_title;
     private TemplateManager m_templateManager;
-    private TabsContextMenuViewModel m_tabsContextMenuViewModel;
     private string m_runPath;
     private string m_runParameters;
-    private IEditor m_editor;
 
     #endregion
 
     #region constructor
     public MainViewModel()
     {
+      m_layoutManager = new LayoutManager(this);
+
       m_tabTrees = Enum.GetValues(typeof(TabTrees)).Cast<TabTrees>().ToList();
       m_closeFileCommand = new GenericManualCommand<IFileViewModel>(CloseFile);
-      m_saveFileCommand = new ManualCommand(Save, () => ActiveLayout != null && ActiveLayout.SelectedFile != null && ActiveLayout.SelectedFile.HasUnsavedChanges);
-      m_saveAllFilesCommand = new ManualCommand(SaveAll, () => Layouts.Any(layout => layout.OpenFiles.Any(n => n.HasUnsavedChanges)));
+      m_saveFileCommand = new ManualCommand(Save, () => LayoutManager.ActiveLayoutElement != null && LayoutManager.ActiveLayoutElement.SelectedFile != null && LayoutManager.ActiveLayoutElement.SelectedFile.HasUnsavedChanges);
+      m_saveAllFilesCommand = new ManualCommand(SaveAll, () => LayoutManager.LayoutElements.Any(layout => layout.OpenFiles.Any(n => n.HasUnsavedChanges)));
       m_openFileViewModelCommand = new GenericManualCommand<IFileViewModel>(file => OpenFile(file));
       m_openFileCommand = new ManualCommand(OpenFile);
       m_openFolderCommand = new ManualCommand(OpenFolder);
@@ -130,7 +128,7 @@ namespace SharpE.ViewModels
         ITreeNode parrent = node.Parent;
         int index = parrent == null ? 0 : parrent.Children.IndexOf(node);
         node.Delete();
-        if (Layouts.Any(layout => layout.OpenFiles.Any(n => n == node)))
+        if (LayoutManager.LayoutElements.Any(layout => layout.OpenFiles.Any(n => n == node)))
           CloseFile((IFileViewModel) node);
         if (parrent == null)
           return;
@@ -202,22 +200,22 @@ namespace SharpE.ViewModels
 
     private void GenerateSchema()
     {
-      if (ActiveLayout == null || ActiveLayout.SelectedFile == null || ActiveLayout.SelectedFile.Exstension != ".json")
+      if (LayoutManager.ActiveLayoutElement == null || LayoutManager.ActiveLayoutElement.SelectedFile == null || LayoutManager.ActiveLayoutElement.SelectedFile.Exstension != ".json")
         return;
       JsonException jsonException;
-      JsonNode jsonNode = (JsonNode)JsonHelperFunctions.Parse(ActiveLayout.SelectedFile.GetContent<string>(), out jsonException);
+      JsonNode jsonNode = (JsonNode)JsonHelperFunctions.Parse(LayoutManager.ActiveLayoutElement.SelectedFile.GetContent<string>(), out jsonException);
       if (jsonException != null)
         return;
       JsonNode schemaNode = SchemaHelper.GenerateSchema(jsonNode);
       CreateNewFile();
-      ActiveLayout.SelectedFile.SetContent(schemaNode.ToString());
+      LayoutManager.ActiveLayoutElement.SelectedFile.SetContent(schemaNode.ToString());
     }
 
     private void CreateNewFile()
     {
       FileViewModel fileViewModel = new FileViewModel(null);
-      ActiveLayout.OpenFiles.Add(fileViewModel);
-      ActiveLayout.SelectedFile = fileViewModel;
+      LayoutManager.ActiveLayoutElement.OpenFiles.Add(fileViewModel);
+      LayoutManager.ActiveLayoutElement.SelectedFile = fileViewModel;
     }
 
     private void OpenFile()
@@ -329,7 +327,7 @@ namespace SharpE.ViewModels
       m_treeNodes[Tree.TabTrees.Templats] = TemplateManager.Root;
 
       m_treeNodes[Tree.TabTrees.Schemas] = new CollectionTreeViewModel(m_schemaManager.Paths);
-      LoadOpenFiles();
+      m_layoutManager.LoadSetup();
 
       UpdateSettings();
       
@@ -357,7 +355,7 @@ namespace SharpE.ViewModels
     {
       if (file == null)
         return;
-      if (!Layouts.Any(layout => layout.OpenFiles.Contains(file)))
+      if (!LayoutManager.LayoutElements.Any(layout => layout.OpenFiles.Contains(file)))
         return;
       if (file.HasUnsavedChanges)
       {
@@ -382,35 +380,35 @@ namespace SharpE.ViewModels
           return;
       }
       file.Reset();
-      EditorLayoutViewModel editorLayoutViewModel = Layouts.FirstOrDefault(n => n.OpenFiles.Contains(file));
-      if (editorLayoutViewModel == null)
+      LayoutElementViewModel layoutElementViewModel = LayoutManager.LayoutElements.FirstOrDefault(n => n.OpenFiles.Contains(file));
+      if (layoutElementViewModel == null)
         return;
-      editorLayoutViewModel.FileUseOrder.Remove(file);
-      if (editorLayoutViewModel.SelectedFile == file)
+      layoutElementViewModel.FileUseOrder.Remove(file);
+      if (layoutElementViewModel.SelectedFile == file)
       {
-        editorLayoutViewModel.OpenFiles.Remove(file);
-        editorLayoutViewModel.SelectedFile = editorLayoutViewModel.FileUseOrder.FirstOrDefault();
+        layoutElementViewModel.OpenFiles.Remove(file);
+        layoutElementViewModel.SelectedFile = layoutElementViewModel.FileUseOrder.FirstOrDefault();
       }
       else
       {
-        editorLayoutViewModel.OpenFiles.Remove(file);
+        layoutElementViewModel.OpenFiles.Remove(file);
       }
       file.FileChangedOnDisk -= FileOnFileChangedOnDisk;
     }
 
-    private void OpenFile(IFileViewModel file, EditorLayoutViewModel editorLayout = null, bool select = true)
+    private void OpenFile(IFileViewModel file, LayoutElementViewModel layoutElement = null, bool select = true)
     {
       if (file == null)
         return;
-      if (editorLayout == null)
-        editorLayout = ActiveLayout;
-      if (file.Path == null || !Layouts.Any(layout => layout.OpenFiles.Any(n => n.Path == file.Path)))
+      if (layoutElement == null)
+        layoutElement = m_layoutManager.LayoutElements.FirstOrDefault(n => n.OpenFiles.Contains(file)) ?? LayoutManager.ActiveLayoutElement;
+      if (file.Path == null || !layoutElement.OpenFiles.Any(n => n.Path == file.Path))
       {
         file.FileChangedOnDisk += FileOnFileChangedOnDisk;
-        editorLayout.OpenFiles.Add(file);
+        layoutElement.OpenFiles.Add(file);
       }
       if (select)
-        editorLayout.SelectedFile = file;
+        layoutElement.SelectedFile = file;
     }
 
     private void FileOnFileChangedOnDisk(IFileViewModel sender)
@@ -435,12 +433,12 @@ namespace SharpE.ViewModels
     {
       if (MessageBoxViewModel.IsShown)
         return false;
-      if (Layouts.Any(layout => layout.OpenFiles.Any(n => n.HasUnsavedChanges)))
+      if (LayoutManager.LayoutElements.Any(layout => layout.OpenFiles.Any(n => n.HasUnsavedChanges)))
       {
         MessageBoxResult result =
           await
           DialogHelper.ShowMessageBox("UnsavedChanges", "The following files have unsaved changes:\r\n" +
-                                                        string.Join("\r\n", Layouts.SelectMany(layout => layout.OpenFiles).Where(n => n.HasUnsavedChanges).Select(n => "  " + n.Name)),
+                                                        string.Join("\r\n", LayoutManager.LayoutElements.SelectMany(layout => layout.OpenFiles).Where(n => n.HasUnsavedChanges).Select(n => "  " + n.Name)),
                                       MessageBoxButton.YesNoCancel);
         switch (result)
         {
@@ -454,7 +452,7 @@ namespace SharpE.ViewModels
         }
       }
       m_autoCompleteCollectionManager.Save();
-      SaveOpenFilesList();
+      m_layoutManager.SaveSetup();
       return true;
     }
 
@@ -476,59 +474,7 @@ namespace SharpE.ViewModels
       }
     }
 
-    private void SaveOpenFilesList()
-    {
-      JsonNode root = new JsonNode();
-      JsonArray layouts = new JsonArray();
-      foreach (EditorLayoutViewModel editorLayoutViewModel in Layouts)
-      {
-        JsonNode layout = new JsonNode();
-        JsonArray openFiles = new JsonArray();
-        foreach (IFileViewModel fileViewModel in editorLayoutViewModel.OpenFiles.Where(n => n.Path != null))
-          openFiles.Add(fileViewModel.Path);
-        layout.Add(new JsonElement("openfiles", openFiles));
-        if (editorLayoutViewModel.SelectedFile != null && editorLayoutViewModel.SelectedFile.Path != null)
-          layout.Add(new JsonElement("selectedFile", editorLayoutViewModel.SelectedFile.Path));
-        layout.Add("isactive", editorLayoutViewModel == m_activeLayout);
-        layouts.Add(layout); 
-      }
-      root.Add("layouts", layouts);
-      StreamWriter streamWriter = File.CreateText(Properties.Settings.Default.SettingPath + "\\openFiles.json");
-      streamWriter.Write(root.ToString());
-      streamWriter.Close();
-    }
 
-    private void LoadOpenFiles()
-    {
-      if (File.Exists(Properties.Settings.Default.SettingPath + "\\openFiles.json"))
-      {
-        StreamReader streamReader = File.OpenText(Properties.Settings.Default.SettingPath + "\\openFiles.json");
-        JsonNode jsonNode = (JsonNode) JsonHelperFunctions.Parse(streamReader.ReadToEnd());
-        streamReader.Close();
-        JsonArray layouts = jsonNode.GetObjectOrDefault<JsonArray>("layouts", null);
-        foreach (JsonNode layout in layouts)
-        {
-          EditorLayoutViewModel editorLayout = new EditorLayoutViewModel(this);
-          JsonArray openFiles = layout.GetObjectOrDefault<JsonArray>("openfiles", null);
-          string selectedFilePath = layout.GetObjectOrDefault<string>("selectedFile", null);
-          foreach (JsonValue jsonValue in openFiles)
-          {
-            IFileViewModel fileViewModel = OpenFile((string) jsonValue.Value, editorLayout,
-              (string) jsonValue.Value == selectedFilePath);
-            if (!editorLayout.FileUseOrder.Contains(fileViewModel))
-              editorLayout.FileUseOrder.Add(fileViewModel);
-          }
-          if (editorLayout.SelectedFile == null && editorLayout.OpenFiles.Count > 0)
-            editorLayout.SelectedFile = editorLayout.OpenFiles.First();
-          if (layout.GetObjectOrDefault("isactive", false))
-            m_activeLayout = editorLayout;
-        }
-      }
-      if (m_layouts.Count == 0)
-        m_layouts.Add(new EditorLayoutViewModel(this));
-      if (m_activeLayout == null)
-        m_activeLayout = m_layouts.FirstOrDefault();
-    }
 
     #endregion
 
@@ -536,7 +482,7 @@ namespace SharpE.ViewModels
 
     public void CloseAllFiles(bool excludeSelected)
     {
-      List<IFileViewModel> unsavedFiles = ActiveLayout.OpenFiles.Where(n => n.HasUnsavedChanges).ToList();
+      List<IFileViewModel> unsavedFiles = LayoutManager.ActiveLayoutElement.OpenFiles.Where(n => n.HasUnsavedChanges).ToList();
       if (unsavedFiles.Count > 0)
       {
         m_dialogHelper.ShowMessageBox(CloseAllMessageboxResult, new object[] {unsavedFiles, excludeSelected},
@@ -565,20 +511,20 @@ namespace SharpE.ViewModels
         default:
           return;
       }
-      List<IFileViewModel> files = ActiveLayout.OpenFiles.ToList();
+      List<IFileViewModel> files = LayoutManager.ActiveLayoutElement.OpenFiles.ToList();
       foreach (IFileViewModel fileViewModel in files)
       {
-        if (!((bool)arg2[1]) || fileViewModel != ActiveLayout.SelectedFile)
+        if (!((bool)arg2[1]) || fileViewModel != LayoutManager.ActiveLayoutElement.SelectedFile)
           CloseFile(fileViewModel);
       }
     }
 
     public void ShowSwitchFile()
     {
-      if (ActiveLayout.OpenFiles.Count < 2)
+      if (LayoutManager.ActiveLayoutElement.OpenFiles.Count < 2)
         return;
       if (m_fileSwitchDialogViewModel == null)
-        m_fileSwitchDialogViewModel = new FileSwitchDialogViewModel(ActiveLayout);
+        m_fileSwitchDialogViewModel = new FileSwitchDialogViewModel(LayoutManager.ActiveLayoutElement);
       if (m_fileSwitchDialogViewModel.IsShown)
         return;
       DialogHelper.ShowDialog(m_fileSwitchDialogViewModel);
@@ -595,7 +541,7 @@ namespace SharpE.ViewModels
       DialogHelper.ShowDialog(m_fileSearchDialogViewModel);
     }
 
-    public IFileViewModel OpenFile(string path, EditorLayoutViewModel layout = null, bool select = true)
+    public IFileViewModel OpenFile(string path, LayoutElementViewModel layoutElement = null, bool select = true)
     {
       IFileViewModel fileViewModel = null;
       foreach (ITreeNode treeNode in m_treeNodes.Values)
@@ -615,18 +561,18 @@ namespace SharpE.ViewModels
 
       if (fileViewModel == null)
         fileViewModel = new FileViewModel(path);
-      OpenFile(fileViewModel, layout, select);
+      OpenFile(fileViewModel, layoutElement, select);
       return fileViewModel;
     }
 
     public void Save()
     {
-      Save(ActiveLayout.SelectedFile);
+      Save(LayoutManager.ActiveLayoutElement.SelectedFile);
     }
 
     public void SaveAll()
     {
-      foreach (FileViewModel fileViewModel in Layouts.SelectMany(n => n.OpenFiles))
+      foreach (FileViewModel fileViewModel in LayoutManager.LayoutElements.SelectMany(n => n.OpenFiles))
         Save(fileViewModel);
     }
 
@@ -644,14 +590,14 @@ namespace SharpE.ViewModels
 
     public void FindInFile()
     {
-      EditorLayoutViewModel layout = Layouts.FirstOrDefault(l => l.OpenFiles.Contains(m_editorManager.FindInFilesViewModel));
-      if (layout == null)
+      LayoutElementViewModel layoutElement = LayoutManager.LayoutElements.FirstOrDefault(l => l.OpenFiles.Contains(m_editorManager.FindInFilesViewModel));
+      if (layoutElement == null)
       {
-        ActiveLayout.OpenFiles.Add(m_editorManager.FindInFilesViewModel);
-        layout = ActiveLayout;
+        LayoutManager.ActiveLayoutElement.OpenFiles.Add(m_editorManager.FindInFilesViewModel);
+        layoutElement = LayoutManager.ActiveLayoutElement;
       }
       m_editorManager.FindInFilesViewModel.TreeNode = m_root;
-      layout.SelectedFile = m_editorManager.FindInFilesViewModel;
+      layoutElement.SelectedFile = m_editorManager.FindInFilesViewModel;
     }
     #endregion
 
@@ -705,18 +651,7 @@ namespace SharpE.ViewModels
       }
     }
 
-    public UIElement EditorView
-    {
-      get { return m_editorView; }
-      set
-      {
-        if (Equals(m_editorView, value)) return;
-        m_editorView = value;
-        OnPropertyChanged();
-      }
-    }
-
-  
+ 
     public TabTrees SelectedTabTree
     {
       get { return m_selectedTabTree; }
@@ -897,11 +832,6 @@ namespace SharpE.ViewModels
       }
     }
 
-    public TabsContextMenuViewModel TabsContextMenuViewModel
-    {
-      get { return m_tabsContextMenuViewModel; }
-    }
-
     public ICommand CreateFolderCommand
     {
       get { return m_createFolderCommand; }
@@ -912,23 +842,10 @@ namespace SharpE.ViewModels
       get { return m_deleteSelectedNodeCommand; }
     }
 
-    public IEditor Editor
+    public LayoutManager LayoutManager
     {
-      get { return m_editor; }
+      get { return m_layoutManager; }
     }
-
-    public EditorLayoutViewModel ActiveLayout
-    {
-      get { return m_activeLayout; }
-      set { m_activeLayout = value; }
-    }
-
-    public IObservableCollection<EditorLayoutViewModel> Layouts
-    {
-      get { return m_layouts; }
-      set { m_layouts = value; }
-    }
-
     #endregion
   }
 }

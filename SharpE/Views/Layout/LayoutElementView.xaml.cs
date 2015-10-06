@@ -1,14 +1,13 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 
-namespace SharpE.Views
+namespace SharpE.Views.Layout
 {
   /// <summary>
   /// Interaction logic for EditorLayoutView.xaml
   /// </summary>
-  public partial class EditorLayoutView
+  public partial class LayoutElementView
   {
-    public EditorLayoutView()
+    public LayoutElementView()
     {
       InitializeComponent();
     }

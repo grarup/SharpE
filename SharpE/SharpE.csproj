@@ -137,10 +137,12 @@
     <Compile Include="ViewModels\Dialogs\FileSwitchDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\ReloadFilesDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\ReloadFileViewModel.cs" />
-    <Compile Include="ViewModels\EditorLayoutViewModel.cs" />
+    <Compile Include="ViewModels\Layout\LayoutElementViewModel.cs" />
     <Compile Include="ViewModels\FindInFilesViewModel.cs" />
     <Compile Include="ViewModels\KeyboardBindingGenerator.cs" />
     <Compile Include="ViewModels\Dialogs\FolderBrowserDialogViewModel.cs" />
+    <Compile Include="ViewModels\Layout\LayoutManager.cs" />
+    <Compile Include="ViewModels\Layout\LayoutType.cs" />
     <Compile Include="ViewModels\Tree\CollectionTreeViewModel.cs" />
     <Compile Include="ViewModels\Tree\DirectoryViewModel.cs" />
     <Compile Include="ViewModels\EditorManager.cs" />
@@ -165,11 +167,29 @@
     <Compile Include="Views\Dialogs\FileSwitchView.xaml.cs">
       <DependentUpon>FileSwitchView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\EditorLayoutView.xaml.cs">
-      <DependentUpon>EditorLayoutView.xaml</DependentUpon>
+    <Compile Include="Views\Layout\GridView.xaml.cs">
+      <DependentUpon>GridView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Layout\ThreeRowsView.xaml.cs">
+      <DependentUpon>ThreeRowsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Layout\TwoRowsView.xaml.cs">
+      <DependentUpon>TwoRowsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Layout\ThreeColumnsView.xaml.cs">
+      <DependentUpon>ThreeColumnsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Layout\LayoutElementView.xaml.cs">
+      <DependentUpon>LayoutElementView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\FindInFilesView.xaml.cs">
       <DependentUpon>FindInFilesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Layout\SingleLayoutView.xaml.cs">
+      <DependentUpon>SingleLayoutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Layout\TwoColumnsView.xaml.cs">
+      <DependentUpon>TwoColumnsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\StyledMessageBoxView.xaml.cs">
       <DependentUpon>StyledMessageBoxView.xaml</DependentUpon>
@@ -242,11 +262,35 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\EditorLayoutView.xaml">
+    <Page Include="Views\Layout\GridView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Layout\ThreeRowsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Layout\TwoRowsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Layout\ThreeColumnsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Layout\LayoutElementView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\FindInFilesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Layout\SingleLayoutView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Layout\TwoColumnsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

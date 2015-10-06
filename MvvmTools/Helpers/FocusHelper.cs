@@ -116,5 +116,42 @@ namespace SharpE.MvvmTools.Helpers
     {
       return (Action<bool>) element.GetValue(HasFocusProperty);
     }
+
+    public static readonly DependencyProperty KeyboardFocusWithProperty =
+      DependencyProperty.RegisterAttached("KeyboardFocusWith", typeof (Action<object>), typeof (FocusHelper), new PropertyMetadata(default(Action<object>), KeyboardFocusWithInPropertyChangedCallback));
+
+    private static void KeyboardFocusWithInPropertyChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+    {
+      UIElement uiElement = dependencyObject as UIElement;
+      if (uiElement == null)
+        return;
+
+      Action<object> oldAction = dependencyPropertyChangedEventArgs.OldValue as Action<object>;
+      if (oldAction != null) 
+        uiElement.IsKeyboardFocusWithinChanged -= UiElementOnIsKeyboardFocusWithinChanged;
+
+      Action<object> newAction = dependencyPropertyChangedEventArgs.NewValue as Action<object>;
+      if (newAction != null)
+        uiElement.IsKeyboardFocusWithinChanged += UiElementOnIsKeyboardFocusWithinChanged;
+
+  }
+
+    private static void UiElementOnIsKeyboardFocusWithinChanged(object sender, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+    {
+      if ((bool) dependencyPropertyChangedEventArgs.NewValue)
+        GetKeyboardFocusWith((UIElement) sender)(GetFocusTag((DependencyObject) sender));
+    }
+
+    public static void SetKeyboardFocusWith(UIElement element, Action<object> value)
+    {
+      element.SetValue(KeyboardFocusWithProperty, value);
+    }
+
+    public static Action<object> GetKeyboardFocusWith(UIElement element)
+    {
+      return (Action<object>) element.GetValue(KeyboardFocusWithProperty);
+    }
+
+
   }
 }

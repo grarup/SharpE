@@ -22,7 +22,6 @@ using SharpE.Json.Schemas;
 using SharpE.MvvmTools.Commands;
 using SharpE.MvvmTools.Properties;
 using SharpE.ViewModels;
-using SharpE.ViewModels.Tree;
 
 namespace SharpE.BaseEditors.BaseTextEditor
 {

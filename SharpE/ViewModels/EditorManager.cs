@@ -16,10 +16,11 @@ namespace SharpE.ViewModels
   public class EditorManager
   {
     private readonly IFileViewModel m_setting;
+    private readonly MainViewModel m_mainViewModel;
     private readonly IObservableCollection<IEditor> m_baseEditors = new ObservableCollection<IEditor>();
     private readonly IObservableCollection<IEditor> m_editorsWithSettings;
-    private readonly IObservableCollection<IEditor> m_usedEditors = new ObservableCollection<IEditor>();
-    private readonly List<IEditor> m_allEditors = new List<IEditor>();
+    private readonly Dictionary<int, IEditor> m_usedEditors = new Dictionary<int, IEditor>();
+    private readonly List<IEditor> m_freeEditors = new List<IEditor>();
     private readonly IEditor m_simpleEditor;
     private readonly JsonEditorViewModel m_jsonEditorViewModel;
     private readonly ImageViewerViewModel m_imageViewerViewModel;
@@ -29,6 +30,7 @@ namespace SharpE.ViewModels
     {
       m_editorsWithSettings = new FilteredObservableCollection<IEditor>(m_baseEditors, editor => editor.Settings != null);
       m_setting = setting;
+      m_mainViewModel = mainViewModel;
       m_imageViewerViewModel = new ImageViewerViewModel();
       m_jsonEditorViewModel = new JsonEditorViewModel(mainViewModel);
       m_simpleEditor = new BaseTextEditorViewModel(mainViewModel);
@@ -63,6 +65,9 @@ namespace SharpE.ViewModels
         if (editor != null)
           m_baseEditors.Add(editor);
       }
+      m_freeEditors.Clear();
+      m_usedEditors.Clear();
+      m_freeEditors.AddRange(m_baseEditors);
     }
 
     public IObservableCollection<IEditor> BaseEditors
@@ -80,9 +85,58 @@ namespace SharpE.ViewModels
       get { return m_editorsWithSettings; }
     }
 
-    public IEditor GetEditor(string fileExstension)
+    public void ReleaseEditor(int index)
     {
-      return m_baseEditors.FirstOrDefault(n => n.SupportedFiles.Contains(fileExstension)) ?? m_simpleEditor;
+      if (m_usedEditors.ContainsKey(index))
+        m_usedEditors.Remove(index);
+    }
+
+    public IEditor GetEditor(string fileExstension, int index)
+    {
+      IEditor baseEditor = m_baseEditors.FirstOrDefault(n => n.SupportedFiles.Contains(fileExstension)) ?? m_simpleEditor;
+      if (m_usedEditors.ContainsKey(index))
+      {
+        if (m_usedEditors[index] != baseEditor)
+        {
+          m_freeEditors.Add(m_usedEditors[index]);
+          m_usedEditors.Remove(index);
+        }
+        else
+        {
+          return baseEditor;
+        }
+      }
+      if (m_usedEditors.ContainsValue(baseEditor))
+      {
+        for (int i = 0; i < m_freeEditors.Count; i++)
+        {
+          IEditor freeEditor = m_freeEditors[i];
+          if (freeEditor.GetType() == baseEditor.GetType())
+          {
+            m_freeEditors.Remove(freeEditor);
+            m_usedEditors.Add(index, freeEditor);
+            return freeEditor;
+          }
+        }
+        IEditor newEditor = CreateEditor(baseEditor);
+        m_usedEditors.Add(index, newEditor);
+        return newEditor;
+      }
+      m_usedEditors.Add(index, baseEditor);
+      m_freeEditors.Remove(baseEditor);
+      return baseEditor;
+    }
+
+    private IEditor CreateEditor(IEditor baseEditor)
+    {
+      if (baseEditor == null)
+        return null;
+      Type type = baseEditor.GetType();
+      if (type == typeof(BaseTextEditorViewModel))
+        return new BaseTextEditorViewModel(m_mainViewModel);
+      if (type == typeof(JsonEditorViewModel))
+        return new JsonEditorViewModel(m_mainViewModel);
+      return null;
     }
 
     private IEditor LoadEditor(string path)

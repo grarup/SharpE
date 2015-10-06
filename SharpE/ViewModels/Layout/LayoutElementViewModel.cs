@@ -6,28 +6,30 @@ using SharpE.Definitions.Project;
 using SharpE.MvvmTools.Collections;
 using SharpE.MvvmTools.Helpers;
 using SharpE.ViewModels.ContextMenu;
-using SharpE.Views;
+using SharpE.Views.Layout;
 
-namespace SharpE.ViewModels
+namespace SharpE.ViewModels.Layout
 {
-  public class EditorLayoutViewModel : BaseViewModel
+  public class LayoutElementViewModel : BaseViewModel
   {
     private IEditor m_editor;
     private readonly IObservableCollection<IFileViewModel> m_openFiles = new ObservableCollection<IFileViewModel>();
     private readonly IObservableCollection<IFileViewModel> m_fileUseOrder = new ObservableCollection<IFileViewModel>();
     private IFileViewModel m_selectedFile;
     private readonly MainViewModel m_mainViewModel;
+    private readonly int m_index;
     private readonly TabsContextMenuViewModel m_tabsContextMenuViewModel;
 
-    public EditorLayoutViewModel(MainViewModel mainViewModel)
+    public LayoutElementViewModel(MainViewModel mainViewModel, int index)
     {
       m_mainViewModel = mainViewModel;
+      m_index = index;
       m_tabsContextMenuViewModel = new TabsContextMenuViewModel(mainViewModel, this);
     }
 
     protected override FrameworkElement GenerateView()
     {
-      return new EditorLayoutView {DataContext = this};
+      return new LayoutElementView {DataContext = this};
     }
 
     public IFileViewModel SelectedFile
@@ -46,13 +48,13 @@ namespace SharpE.ViewModels
           if (m_fileUseOrder.Contains(m_selectedFile))
             m_fileUseOrder.Remove(m_selectedFile);
           m_fileUseOrder.Insert(0, m_selectedFile);
-          Editor = MainViewModel.EditorManager.GetEditor(m_selectedFile.Exstension);
+          Editor = MainViewModel.EditorManager.GetEditor(m_selectedFile.Exstension, m_index);
           m_editor.File = m_selectedFile;
           m_selectedFile.PropertyChanged += SelectedFileOnPropertyChanged;
         }
         else
         {
-          Editor = null;
+          Editor = m_mainViewModel.EditorManager.GetEditor(null, m_index);
         }
         MainViewModel.SaveFileCommand.Update();
         OnPropertyChanged();
@@ -82,7 +84,10 @@ namespace SharpE.ViewModels
 
     public IEditor Editor
     {
-      get { return m_editor; }
+      get
+      {
+        return m_editor ?? (m_editor = m_mainViewModel.EditorManager.GetEditor(null, m_index));
+      }
       set
       {
         if (Equals(value, m_editor)) return;

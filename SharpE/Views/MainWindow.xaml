@@ -29,6 +29,11 @@
                 <Setter Property="CommandParameter" Value="{Binding Path=Settings}"/>
                 <Setter Property="Header" Value="{Binding Path=Name}"></Setter>
             </Style>
+            <Style x:Key="LayoutMenuItemStyle" TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                <Setter Property="Command" Value="{Binding DataContext.LayoutManager.SelectLayoutTypeCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Menu}}}"/>
+                <Setter Property="CommandParameter" Value="{Binding }"/>
+                <Setter Property="Header" Value="{Binding }"></Setter>
+            </Style>
             <Style x:Key="MvvmMenuItemStyle" TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}" d:DataContext="{d:DesignInstance contextMenu:ContextmenuItemViewModel}">
                 <Setter Property="Command" Value="{Binding Path=Command}"/>
                 <Setter Property="CommandParameter" Value="{Binding Path=CommandParameter}"/>
@@ -73,6 +78,7 @@
                 <MenuItem Header="Settings">
                     <MenuItem Header="General" Command="{Binding Path=OpenFileViewModelCommand}" CommandParameter="{Binding Path=Settings}"/>
                     <MenuItem Header="BaseEditors" ItemsSource="{Binding Path=EditorManager.EditorsWithSettings}" ItemContainerStyle="{StaticResource SettingsMenuItemStyle}"/>
+                    <MenuItem Header="Layout" ItemsSource="{Binding Path=LayoutManager.LayoutTypes}" ItemContainerStyle="{StaticResource LayoutMenuItemStyle}"/>
                     <MenuItem Header="Settings path" Command="{Binding Path=ChangeSettingsPathCommand}"></MenuItem>
                 </MenuItem>
                 <MenuItem Header="Help"></MenuItem>
@@ -150,7 +156,7 @@
                     </ControlTemplate>
                 </GridSplitter.Template>
             </GridSplitter>
-            <ContentControl Grid.Column="2" Grid.Row="2" Content="{Binding Path=ActiveLayout.View}"></ContentControl>
+            <ContentControl Grid.Column="2" Grid.Row="2" Content="{Binding Path=LayoutManager.View}"></ContentControl>
         </Grid>
         <views:DialogView DataContext="{Binding Path=DialogViewModel}"></views:DialogView>
         <views:StyledMessageBoxView DataContext="{Binding Path=MessageBoxViewModel}"></views:StyledMessageBoxView>

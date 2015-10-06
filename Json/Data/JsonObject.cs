@@ -121,6 +121,12 @@ namespace SharpE.Json.Data
         return;
       }
 
+      if (value.GetType().IsEnum)
+      {
+        stringBuilder.Append("\"" + value + "\"");
+        return;
+      }
+
       stringBuilder.Append(value.ToString().ToLower());
     }
 
