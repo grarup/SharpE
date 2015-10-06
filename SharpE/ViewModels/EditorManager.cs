@@ -118,25 +118,13 @@ namespace SharpE.ViewModels
             return freeEditor;
           }
         }
-        IEditor newEditor = CreateEditor(baseEditor);
+        IEditor newEditor = baseEditor.CreateNew();
         m_usedEditors.Add(index, newEditor);
         return newEditor;
       }
       m_usedEditors.Add(index, baseEditor);
       m_freeEditors.Remove(baseEditor);
       return baseEditor;
-    }
-
-    private IEditor CreateEditor(IEditor baseEditor)
-    {
-      if (baseEditor == null)
-        return null;
-      Type type = baseEditor.GetType();
-      if (type == typeof(BaseTextEditorViewModel))
-        return new BaseTextEditorViewModel(m_mainViewModel);
-      if (type == typeof(JsonEditorViewModel))
-        return new JsonEditorViewModel(m_mainViewModel);
-      return null;
     }
 
     private IEditor LoadEditor(string path)

@@ -77,6 +77,11 @@ namespace SharpE.BaseEditors.Image
       get { return m_supportedFiles; }
     }
 
+    public IEditor CreateNew()
+    {
+      return new ImageViewerViewModel();
+    }
+
     public System.Windows.Controls.Image Image
     {
       get { return m_image; }

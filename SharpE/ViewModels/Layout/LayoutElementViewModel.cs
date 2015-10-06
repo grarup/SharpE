@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using SharpE.Definitions.Collection;
 using SharpE.Definitions.Editor;
@@ -19,6 +20,7 @@ namespace SharpE.ViewModels.Layout
     private readonly MainViewModel m_mainViewModel;
     private readonly int m_index;
     private readonly TabsContextMenuViewModel m_tabsContextMenuViewModel;
+    private Action<object> m_dragAction;
 
     public LayoutElementViewModel(MainViewModel mainViewModel, int index)
     {
@@ -29,7 +31,7 @@ namespace SharpE.ViewModels.Layout
 
     protected override FrameworkElement GenerateView()
     {
-      return new LayoutElementView {DataContext = this};
+      return new LayoutElementView { DataContext = this };
     }
 
     public IFileViewModel SelectedFile
@@ -104,6 +106,55 @@ namespace SharpE.ViewModels.Layout
     public MainViewModel MainViewModel
     {
       get { return m_mainViewModel; }
+    }
+
+    public Action<object, DragDropEffects> DropAction
+    {
+      get { return Drop; }
+    }
+
+    private void Drop(object o, DragDropEffects dragDropEffects)
+    {
+      IFileViewModel fileViewModel = o as IFileViewModel;
+      if (fileViewModel == null) return;
+      m_openFiles.Add(fileViewModel);
+      m_fileUseOrder.Insert(0, fileViewModel);
+      SelectedFile = fileViewModel;
+    }
+
+    public Action<object> DragAction
+    {
+      get { return Drag; }
+    }
+
+    private void Drag(object o)
+    {
+      IFileViewModel fileViewModel = o as IFileViewModel;
+      if (fileViewModel == null) return;
+      int index = m_openFiles.IndexOf(fileViewModel);
+      m_openFiles.Remove(fileViewModel);
+      m_fileUseOrder.Remove(fileViewModel);
+      if (m_openFiles.Count == 0)
+        return;
+      if (index >= m_openFiles.Count)
+        index = m_openFiles.Count - 1;
+      SelectedFile = m_openFiles[index];
+    }
+
+    public Action<object, bool> DropCompleteAction
+    {
+      get { return DropComplete; }
+    }
+
+    private void DropComplete(object o, bool arg2)
+    {
+      if (arg2) return;
+      IFileViewModel fileViewModel = o as IFileViewModel;
+      if (fileViewModel == null) return;
+      m_openFiles.Add(fileViewModel);
+      m_fileUseOrder.Insert(0, fileViewModel);
+      SelectedFile = fileViewModel;
+
     }
   }
 }

@@ -74,6 +74,8 @@
     <Compile Include="Helpers\BaseOwnerViewModel.cs" />
     <Compile Include="Helpers\BaseViewModel.cs" />
     <Compile Include="Helpers\BindableRichTextBox.cs" />
+    <Compile Include="Helpers\DragHelper.cs" />
+    <Compile Include="Helpers\DropHelper.cs" />
     <Compile Include="Helpers\IOwnerViewModel.cs" />
     <Compile Include="Helpers\IViewModel.cs" />
     <Compile Include="Helpers\IWindowViewModel.cs" />

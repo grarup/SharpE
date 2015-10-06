@@ -11,6 +11,7 @@ namespace SharpE.Definitions.Editor
     IFileViewModel Settings { get; }
     UIElement View { get; }
     IFileViewModel File { get; set; }
-    IEnumerable<string> SupportedFiles { get; } 
+    IEnumerable<string> SupportedFiles { get; }
+    IEditor CreateNew();
   }
 }

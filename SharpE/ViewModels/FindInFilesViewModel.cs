@@ -268,6 +268,11 @@ namespace SharpE.ViewModels
       get { return m_supportedFiles; }
     }
 
+    public IEditor CreateNew()
+    {
+      return new FindInFilesViewModel(m_mainViewModel);
+    }
+
     public string RenameString
     {
       get { return "Find in files"; }

@@ -793,5 +793,12 @@ namespace SharpE.BaseEditors.Json.ViewModels
     }
 
     #endregion
+
+    #region overrides
+    public override IEditor CreateNew()
+    {
+      return new JsonEditorViewModel(m_mainViewModel);
+    }
+    #endregion
   }
 }

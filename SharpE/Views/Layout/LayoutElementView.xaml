@@ -7,8 +7,9 @@
              xmlns:converters="clr-namespace:SharpE.MvvmTools.Converters;assembly=MvvmTools"
              xmlns:contextMenu="clr-namespace:SharpE.ViewModels.ContextMenu"
              xmlns:layout="clr-namespace:SharpE.ViewModels.Layout"
+             xmlns:helpers="clr-namespace:SharpE.MvvmTools.Helpers;assembly=MvvmTools"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance layout:LayoutElementViewModel}">
+             d:DesignHeight="300" d:DesignWidth="300" Background="Transparent" d:DataContext="{d:DesignInstance layout:LayoutElementViewModel}">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -26,7 +27,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid>
+    <Grid Background="DeepPink" x:Name="DragArea" AllowDrop="True">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -38,7 +39,7 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <controls:HorizontalEdgeButtonScroll StepSize="150">
-                <ListView ItemsSource="{Binding Path=OpenFiles}" SelectedItem="{Binding Path=SelectedFile}" SelectionMode="Single" Style="{StaticResource TabeListView}">
+                <ListView ItemsSource="{Binding Path=OpenFiles}" SelectedItem="{Binding Path=SelectedFile}" SelectionMode="Single" Style="{StaticResource TabeListView}" helpers:ListViewHelper.EnableDragHover="{Binding ElementName=DragArea}">
                     <ListView.ContextMenu>
                         <ContextMenu  DataContext="{Binding Path=PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}" ItemsSource="{Binding Path=TabsContextMenuViewModel.MenuItems}" Focusable="False" ItemContainerStyle="{StaticResource MvvmMenuItemStyle}"></ContextMenu>
                     </ListView.ContextMenu>
@@ -49,7 +50,8 @@
                     </ListView.ItemsPanel>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Border ToolTip="{Binding Path=Path}" Margin="0" Padding="0">
+                            <Border ToolTip="{Binding Path=Path}" Margin="0" Padding="0" helpers:DragHelper.DragData="{Binding }" helpers:DragHelper.DragDroppEffects="Move" helpers:DragHelper.EnableDrag="True" 
+                                    helpers:DragHelper.DropComplete="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListView}}, Path=DataContext.DropCompleteAction}">
                                 <StackPanel Orientation="Horizontal" Margin="4,0,4,0">
                                     <!--<Ellipse Width="8" Height="8" Margin="0,5,2,2" VerticalAlignment="Center" Fill="{Binding Path=ValidationState, Converter={viewModels:ValidationStateValueConverter}}" Visibility="{Binding Path=ValidationState, Converter={converters:InvertedEnumBoolConverter}, ConverterParameter={x:Static definition:ValidationState.Undefined}}" Stroke="{StaticResource BackgroundBrush}" StrokeThickness="1" ></Ellipse>-->
                                     <TextBlock Text="{Binding Path=Name}" Foreground="White" VerticalAlignment="Center" MinHeight="10" Margin="0"></TextBlock>

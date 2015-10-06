@@ -196,6 +196,11 @@ namespace SharpE.BaseEditors.BaseTextEditor
       get { return m_supportedFiles; }
     }
 
+    public virtual IEditor CreateNew()
+    {
+      return new BaseTextEditorViewModel(m_mainViewModel);
+    }
+
     public void JumpToLine(int lineNumber)
     {
       m_caret.Line = lineNumber;

@@ -14,7 +14,7 @@ namespace SharpE.ViewModels.Layout
 {
   public class LayoutManager : BaseViewModel
   {
-    private LayoutType m_selectedLayoutType = LayoutType.ThreeColumns;
+    private LayoutType m_selectedLayoutType;
     private IObservableCollection<LayoutElementViewModel> m_layoutElements = new ObservableCollection<LayoutElementViewModel>();
     private LayoutElementViewModel m_activeLayoutElement;
     private readonly MainViewModel m_mainViewModel;
@@ -25,7 +25,6 @@ namespace SharpE.ViewModels.Layout
     {
       m_mainViewModel = mainViewModel;
       m_selectLayoutTypeCommand = new GenericManualCommand<LayoutType>(layoutType => SelectedLayoutType = layoutType);
-      CrateView();
     }
 
     private void CrateView()
@@ -180,6 +179,10 @@ namespace SharpE.ViewModels.Layout
             m_activeLayoutElement = layoutElement;
           index++;
         }
+      }
+      else
+      {
+        SelectedLayoutType = LayoutType.Single;
       }
     }
   }

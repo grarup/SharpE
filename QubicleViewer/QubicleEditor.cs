@@ -157,6 +157,11 @@ namespace SharpE.QubicleViewer
       get { return m_supportedFiles; }
     }
 
+    public IEditor CreateNew()
+    {
+      return new QubicleEditor();
+    }
+
     public Vector3D LookDirection
     {
       get { return m_lookDirection; }
