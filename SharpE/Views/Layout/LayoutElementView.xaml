@@ -27,7 +27,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Background="DeepPink" x:Name="DragArea" AllowDrop="True">
+    <Grid Background="Transparent" x:Name="DragArea" AllowDrop="True">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
