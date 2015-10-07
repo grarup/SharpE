@@ -375,7 +375,7 @@ namespace SharpE.ViewModels
       file.FileChangedOnDisk -= FileOnFileChangedOnDisk;
     }
 
-    private void OpenFile(IFileViewModel file, LayoutElementViewModel layoutElement = null, bool select = true)
+    public void OpenFile(IFileViewModel file, LayoutElementViewModel layoutElement = null, bool select = true)
     {
       if (file == null)
         return;
