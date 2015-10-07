@@ -46,7 +46,14 @@
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Button Width="100" Content="{Binding Path=Text}" Command="{Binding Path=Command}" CommandParameter="{Binding Path=Result}"></Button>
+                                    <Button Width="100" Content="{Binding Path=Text}" Command="{Binding Path=Command}" CommandParameter="{Binding Path=Result}">
+                                        <helpers:FocusHelper.IsFocus>
+                                            <MultiBinding Converter="{converters:ExpresionConverter}" ConverterParameter="x * y">
+                                                <Binding Path="HasInitFocus" />
+                                                <Binding RelativeSource="{RelativeSource AncestorType={x:Type ItemsControl}}" Path="DataContext.IsShown" />
+                                            </MultiBinding>
+                                        </helpers:FocusHelper.IsFocus>
+                                    </Button>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>

@@ -46,19 +46,19 @@ namespace SharpE.MvvmTools.Helpers
         switch (m_button)
         {
           case MessageBoxButton.OK:
-            Buttons.Add(new MessageBoxButtonViewModel(GetString(MessageBoxResult.OK), MessageBoxResult.OK, ButtonPushed));
+            Buttons.Add(new MessageBoxButtonViewModel(GetString(MessageBoxResult.OK), MessageBoxResult.OK, ButtonPushed, true));
             break;
           case MessageBoxButton.OKCancel:
             Buttons.Add(new MessageBoxButtonViewModel(GetString(MessageBoxResult.OK), MessageBoxResult.OK, ButtonPushed));
-            Buttons.Add(new MessageBoxButtonViewModel(GetString(MessageBoxResult.Cancel), MessageBoxResult.Cancel, ButtonPushed));
+            Buttons.Add(new MessageBoxButtonViewModel(GetString(MessageBoxResult.Cancel), MessageBoxResult.Cancel, ButtonPushed, true));
             break;
           case MessageBoxButton.YesNoCancel:
             Buttons.Add(new MessageBoxButtonViewModel(GetString(MessageBoxResult.Yes), MessageBoxResult.Yes, ButtonPushed));
             Buttons.Add(new MessageBoxButtonViewModel(GetString(MessageBoxResult.No), MessageBoxResult.No, ButtonPushed));
-            Buttons.Add(new MessageBoxButtonViewModel(GetString(MessageBoxResult.Cancel), MessageBoxResult.Cancel, ButtonPushed));
+            Buttons.Add(new MessageBoxButtonViewModel(GetString(MessageBoxResult.Cancel), MessageBoxResult.Cancel, ButtonPushed, true));
             break;
           case MessageBoxButton.YesNo:
-            Buttons.Add(new MessageBoxButtonViewModel(GetString(MessageBoxResult.Yes), MessageBoxResult.Yes, ButtonPushed));
+            Buttons.Add(new MessageBoxButtonViewModel(GetString(MessageBoxResult.Yes), MessageBoxResult.Yes, ButtonPushed, true));
             Buttons.Add(new MessageBoxButtonViewModel(GetString(MessageBoxResult.No), MessageBoxResult.No, ButtonPushed));
             break;
         }
