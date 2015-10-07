@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using SharpE.Definitions.Editor;
 using SharpE.Definitions.Project;
 using SharpE.MvvmTools.Collections;
 using SharpE.MvvmTools.Commands;
@@ -13,29 +14,29 @@ namespace SharpE.ViewModels.ContextMenu
   class ProjectContextMenuViewModel : IContextMenuViewModel
   {
     private readonly MainViewModel m_mainViewModel;
-    private readonly List<ContextmenuItemViewModel> m_menuItems = new List<ContextmenuItemViewModel>();
-    private readonly ContextmenuItemViewModel m_openContextmenuItemViewModel;
-    private readonly ContextmenuItemViewModel m_renameContextmenuItemViewModel;
-    private readonly ContextmenuItemViewModel m_newContextmenuItemViewModel;
-    private readonly ContextmenuItemViewModel m_newFromTemplateContextmenuItemViewModel;
+    private readonly List<MenuItemViewModel> m_menuItems = new List<MenuItemViewModel>();
+    private readonly MenuItemViewModel m_openMenuItemViewModel;
+    private readonly MenuItemViewModel m_renameMenuItemViewModel;
+    private readonly MenuItemViewModel m_newMenuItemViewModel;
+    private readonly MenuItemViewModel m_newFromTemplateMenuItemViewModel;
 
     public ProjectContextMenuViewModel(MainViewModel mainViewModel)
     {
       m_mainViewModel = mainViewModel;
       m_mainViewModel.PropertyChanged += MainViewModelOnPropertyChanged;
-      m_openContextmenuItemViewModel = new ContextmenuItemViewModel("Open", mainViewModel.OpenFileViewModelCommand, mainViewModel, "SelectedNode");
-      m_menuItems.Add(m_openContextmenuItemViewModel);
-      m_renameContextmenuItemViewModel = new ContextmenuItemViewModel("Rename", mainViewModel.RenameSelectedNodeCommand);
-      m_menuItems.Add(m_renameContextmenuItemViewModel);
-      m_menuItems.Add(new ContextmenuItemViewModel("Delete", mainViewModel.DeleteSelectedNodeCommand));
-      m_newContextmenuItemViewModel = new ContextmenuItemViewModel("New");
-      m_menuItems.Add(m_newContextmenuItemViewModel);
-      m_newContextmenuItemViewModel.Children.Add(new ContextmenuItemViewModel("Folder", m_mainViewModel.CreateFolderCommand));
-      m_newContextmenuItemViewModel.Children.Add(new ContextmenuItemViewModel("Txt", m_mainViewModel.CreateFileCommand, "file.txt"));
-      m_newContextmenuItemViewModel.Children.Add(new ContextmenuItemViewModel("Json", m_mainViewModel.CreateFileCommand, "file.json"));
-      m_newFromTemplateContextmenuItemViewModel = new ContextmenuItemViewModel("New from template",
-        new ConverterObservableCollection<Template, ContextmenuItemViewModel>(m_mainViewModel.TemplateManager.Templates, template => new ContextmenuItemViewModel("Name", template, new GenericManualCommand<Template>(RunTemplate), template)));
-      m_menuItems.Add(m_newFromTemplateContextmenuItemViewModel);
+      m_openMenuItemViewModel = new MenuItemViewModel("Open", mainViewModel.OpenFileViewModelCommand, mainViewModel, "SelectedNode");
+      m_menuItems.Add(m_openMenuItemViewModel);
+      m_renameMenuItemViewModel = new MenuItemViewModel("Rename", mainViewModel.RenameSelectedNodeCommand);
+      m_menuItems.Add(m_renameMenuItemViewModel);
+      m_menuItems.Add(new MenuItemViewModel("Delete", mainViewModel.DeleteSelectedNodeCommand));
+      m_newMenuItemViewModel = new MenuItemViewModel("New");
+      m_menuItems.Add(m_newMenuItemViewModel);
+      m_newMenuItemViewModel.Children.Add(new MenuItemViewModel("Folder", m_mainViewModel.CreateFolderCommand));
+      m_newMenuItemViewModel.Children.Add(new MenuItemViewModel("Txt", m_mainViewModel.CreateFileCommand, "file.txt"));
+      m_newMenuItemViewModel.Children.Add(new MenuItemViewModel("Json", m_mainViewModel.CreateFileCommand, "file.json"));
+      m_newFromTemplateMenuItemViewModel = new MenuItemViewModel("New from template",
+        new ConverterObservableCollection<Template, IMenuItemViewModel>(m_mainViewModel.TemplateManager.Templates, template => new MenuItemViewModel("Name", template, new GenericManualCommand<Template>(RunTemplate), template)));
+      m_menuItems.Add(m_newFromTemplateMenuItemViewModel);
     }
 
     private void RunTemplate(Template template)
@@ -57,7 +58,7 @@ namespace SharpE.ViewModels.ContextMenu
       }
     }
 
-    public List<ContextmenuItemViewModel> MenuItems
+    public List<MenuItemViewModel> MenuItems
     {
       get { return m_menuItems; }
     }
@@ -66,18 +67,18 @@ namespace SharpE.ViewModels.ContextMenu
     {
       if (m_mainViewModel.SelectedNode != null)
       {
-        m_openContextmenuItemViewModel.IsVisable = m_mainViewModel.SelectedNode is IFileViewModel;
-        m_renameContextmenuItemViewModel.IsVisable = true;
-        m_newFromTemplateContextmenuItemViewModel.IsVisable = 
-          m_newContextmenuItemViewModel.IsVisable = m_mainViewModel.SelectedNode is DirectoryViewModel;
+        m_openMenuItemViewModel.IsVisable = m_mainViewModel.SelectedNode is IFileViewModel;
+        m_renameMenuItemViewModel.IsVisable = true;
+        m_newFromTemplateMenuItemViewModel.IsVisable = 
+          m_newMenuItemViewModel.IsVisable = m_mainViewModel.SelectedNode is DirectoryViewModel;
         
       }
       else
       {
-        m_openContextmenuItemViewModel.IsVisable = false;
-        m_renameContextmenuItemViewModel.IsVisable = false;
-        m_newContextmenuItemViewModel.IsVisable = false;
-        m_newFromTemplateContextmenuItemViewModel.IsVisable = false;
+        m_openMenuItemViewModel.IsVisable = false;
+        m_renameMenuItemViewModel.IsVisable = false;
+        m_newMenuItemViewModel.IsVisable = false;
+        m_newFromTemplateMenuItemViewModel.IsVisable = false;
       }
     }
   }

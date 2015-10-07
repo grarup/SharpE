@@ -52,7 +52,6 @@ namespace SharpE.ViewModels
     private readonly ManualCommand m_renameSelectedNodeCancelCommand;
     private readonly GenericManualCommand<string> m_createFileCommand;
     private readonly ManualCommand m_saveAllFilesCommand;
-    private readonly ManualCommand m_generateSchemaCommand;
     private readonly ICommand m_createFolderCommand;
     private readonly ICommand m_deleteSelectedNodeCommand;
 
@@ -91,7 +90,6 @@ namespace SharpE.ViewModels
       m_exitCommand = new ManualCommand(() => Environment.Exit(0));
       m_newFileCommand = new ManualCommand(CreateNewFile);
       m_changeSettingsPathCommand = new ManualCommand(ChangeSettingsPath);
-      m_generateSchemaCommand = new ManualCommand(GenerateSchema);
       m_renameSelectedNodeCommand = new ManualCommand(() => m_selectedNode.IsRenaming = true);
       m_renameSelectedNodeDoneCommand = new ManualCommand(() => m_selectedNode.IsRenaming = false);
       m_renameSelectedNodeCancelCommand = new ManualCommand(() => { m_selectedNode.RenameString = null; m_selectedNode.IsRenaming = false; });
@@ -198,25 +196,7 @@ namespace SharpE.ViewModels
       return fileViewModel;
     }
 
-    private void GenerateSchema()
-    {
-      if (LayoutManager.ActiveLayoutElement == null || LayoutManager.ActiveLayoutElement.SelectedFile == null || LayoutManager.ActiveLayoutElement.SelectedFile.Exstension != ".json")
-        return;
-      JsonException jsonException;
-      JsonNode jsonNode = (JsonNode)JsonHelperFunctions.Parse(LayoutManager.ActiveLayoutElement.SelectedFile.GetContent<string>(), out jsonException);
-      if (jsonException != null)
-        return;
-      JsonNode schemaNode = SchemaHelper.GenerateSchema(jsonNode);
-      CreateNewFile();
-      LayoutManager.ActiveLayoutElement.SelectedFile.SetContent(schemaNode.ToString());
-    }
 
-    private void CreateNewFile()
-    {
-      FileViewModel fileViewModel = new FileViewModel(null);
-      LayoutManager.ActiveLayoutElement.OpenFiles.Add(fileViewModel);
-      LayoutManager.ActiveLayoutElement.SelectedFile = fileViewModel;
-    }
 
     private void OpenFile()
     {
@@ -479,6 +459,12 @@ namespace SharpE.ViewModels
     #endregion
 
     #region public methods
+    public void CreateNewFile()
+    {
+      FileViewModel fileViewModel = new FileViewModel(null);
+      LayoutManager.ActiveLayoutElement.OpenFiles.Add(fileViewModel);
+      LayoutManager.ActiveLayoutElement.SelectedFile = fileViewModel;
+    }
 
     public void CloseAllFiles(bool excludeSelected)
     {
@@ -782,11 +768,6 @@ namespace SharpE.ViewModels
     public ManualCommand NewFileCommand
     {
       get { return m_newFileCommand; }
-    }
-
-    public ManualCommand GenerateSchemaCommand
-    {
-      get { return m_generateSchemaCommand; }
     }
 
     public ManualCommand RenameSelectedNodeCommand

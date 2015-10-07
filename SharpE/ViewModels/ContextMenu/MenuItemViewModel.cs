@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using SharpE.Definitions.Collection;
+using SharpE.Definitions.Editor;
 using SharpE.MvvmTools.Collections;
-using SharpE.MvvmTools.Commands;
 using SharpE.MvvmTools.Properties;
 
 namespace SharpE.ViewModels.ContextMenu
 {
-  public class ContextmenuItemViewModel : INotifyPropertyChanged
+  public class MenuItemViewModel : IMenuItemViewModel
   {
-    private readonly IObservableCollection<ContextmenuItemViewModel> m_children;
+    private readonly IObservableCollection<IMenuItemViewModel> m_children;
     private string m_name;
     private bool m_isVisable = true;
     private readonly string m_nameKey;
@@ -28,8 +23,8 @@ namespace SharpE.ViewModels.ContextMenu
     private readonly PropertyInfo m_commandPropertyInfo;
     private readonly PropertyInfo m_namePropertyInfo;
 
-    public ContextmenuItemViewModel(string nameKey, INotifyPropertyChanged nameSource, ICommand command, INotifyPropertyChanged commandParameterSource, string commandParameterName)
-      : this("name", new ObservableCollection<ContextmenuItemViewModel>())
+    public MenuItemViewModel(string nameKey, INotifyPropertyChanged nameSource, ICommand command, INotifyPropertyChanged commandParameterSource, string commandParameterName)
+      : this("name", new ObservableCollection<IMenuItemViewModel>())
     {
       m_nameKey = nameKey;
       m_nameSource = nameSource;
@@ -63,7 +58,7 @@ namespace SharpE.ViewModels.ContextMenu
     }
 
 
-    public ContextmenuItemViewModel(string name, ICommand command, INotifyPropertyChanged commandParameterSource = null, string commandParameterName= null) : this(name, new ObservableCollection<ContextmenuItemViewModel>())
+    public MenuItemViewModel(string name, ICommand command, INotifyPropertyChanged commandParameterSource = null, string commandParameterName= null) : this(name, new ObservableCollection<IMenuItemViewModel>())
     {
       m_command = command;
       m_commandParameterSource = commandParameterSource;
@@ -79,8 +74,8 @@ namespace SharpE.ViewModels.ContextMenu
       }
     }
 
-    public ContextmenuItemViewModel(string nameKey, INotifyPropertyChanged nameSource, ICommand command, object commandParameter)
-      : this("Name", new ObservableCollection<ContextmenuItemViewModel>())
+    public MenuItemViewModel(string nameKey, INotifyPropertyChanged nameSource, ICommand command, object commandParameter)
+      : this("Name", new ObservableCollection<IMenuItemViewModel>())
     {
       m_nameKey = nameKey;
       m_nameSource = nameSource;
@@ -97,17 +92,17 @@ namespace SharpE.ViewModels.ContextMenu
       }
     }
 
-    public ContextmenuItemViewModel(string name, ICommand command, object commandParameter) : this(name, new ObservableCollection<ContextmenuItemViewModel>())
+    public MenuItemViewModel(string name, ICommand command, object commandParameter) : this(name, new ObservableCollection<IMenuItemViewModel>())
     {
       m_command = command;
       m_commandParameter = commandParameter;
     }
 
-    public ContextmenuItemViewModel(string name) : this(name, new ObservableCollection<ContextmenuItemViewModel>())
+    public MenuItemViewModel(string name) : this(name, new ObservableCollection<IMenuItemViewModel>())
     {
     }
 
-    public ContextmenuItemViewModel(string name, IObservableCollection<ContextmenuItemViewModel> children)
+    public MenuItemViewModel(string name, IObservableCollection<IMenuItemViewModel> children)
     {
       m_name = name;
       m_children = children;
@@ -124,7 +119,7 @@ namespace SharpE.ViewModels.ContextMenu
       get { return m_name; }
     }
 
-    public IObservableCollection<ContextmenuItemViewModel> Children
+    public IObservableCollection<IMenuItemViewModel> Children
     {
       get { return m_children; }
     }

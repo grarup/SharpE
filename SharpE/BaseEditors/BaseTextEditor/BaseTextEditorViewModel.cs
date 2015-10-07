@@ -15,6 +15,7 @@ using ICSharpCode.AvalonEdit.Editing;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Highlighting;
 using SharpE.BaseEditors.AvalonTextEditorAddons;
+using SharpE.Definitions.Collection;
 using SharpE.Definitions.Editor;
 using SharpE.Definitions.Project;
 using SharpE.Json.Data;
@@ -55,6 +56,7 @@ namespace SharpE.BaseEditors.BaseTextEditor
     protected string m_name = "Base text editor";
     private TextMarkingBackGroundRender m_textMarkingBackGroundRender;
     protected Schema m_settningsSchema;
+    protected IObservableCollection<IMenuItemViewModel> m_menuItems = null;
 
     public BaseTextEditorViewModel(MainViewModel mainViewModel)
     {
@@ -199,6 +201,11 @@ namespace SharpE.BaseEditors.BaseTextEditor
     public virtual IEditor CreateNew()
     {
       return new BaseTextEditorViewModel(m_mainViewModel);
+    }
+
+    public IObservableCollection<IMenuItemViewModel> MenuItems
+    {
+      get { return m_menuItems; }
     }
 
     public void JumpToLine(int lineNumber)

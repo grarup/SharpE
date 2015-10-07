@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Media3D;
+using SharpE.Definitions.Collection;
 using SharpE.Definitions.Editor;
 using SharpE.Definitions.Project;
 using SharpE.QubicleViewer.Properties;
@@ -34,7 +35,7 @@ namespace SharpE.QubicleViewer
     private QbModel m_qbModel;
     private CancellationTokenSource m_cancellationTokenSource;
     private double m_opacity;
-
+    private readonly IObservableCollection<IMenuItemViewModel> m_menuItems = null;
     #endregion
 
     #region constructor
@@ -160,6 +161,11 @@ namespace SharpE.QubicleViewer
     public IEditor CreateNew()
     {
       return new QubicleEditor();
+    }
+
+    public IObservableCollection<IMenuItemViewModel> MenuItems
+    {
+      get { return m_menuItems; }
     }
 
     public Vector3D LookDirection

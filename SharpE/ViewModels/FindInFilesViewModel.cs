@@ -28,13 +28,14 @@ namespace SharpE.ViewModels
     private TextEditor m_editor;
     private readonly ManualCommand m_findCommand;
     private readonly ManualCommand m_jumpCommand;
-    private IFileViewModel m_settings;
+    private readonly IFileViewModel m_settings = null;
     private IFileViewModel m_file;
     private readonly IEnumerable<string> m_supportedFiles = new[] { "searchresult" };
     private CancellationTokenSource m_cancellationTokenSource;
     private readonly List<Task> m_tasks = new List<Task>();
     private readonly List<string> m_extenisionToIgnore = new List<string>();
     private string m_searchFile;
+    private readonly IObservableCollection<IMenuItemViewModel> m_menuItems = null;
 
     public FindInFilesViewModel(MainViewModel mainViewModel)
     {
@@ -212,7 +213,7 @@ namespace SharpE.ViewModels
     {
       if (!m_view.Dispatcher.CheckAccess())
       {
-        m_view.Dispatcher.Invoke(new Action(() => UpdateText(text)));
+        m_view.Dispatcher.Invoke(() => UpdateText(text));
         return;
       }
 
@@ -238,7 +239,6 @@ namespace SharpE.ViewModels
 
     public void Show()
     {
-
     }
 
     public string Name
@@ -271,6 +271,11 @@ namespace SharpE.ViewModels
     public IEditor CreateNew()
     {
       return new FindInFilesViewModel(m_mainViewModel);
+    }
+
+    public IObservableCollection<IMenuItemViewModel> MenuItems
+    {
+      get { return m_menuItems; }
     }
 
     public string RenameString

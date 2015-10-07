@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using SharpE.Definitions.Collection;
 using SharpE.Definitions.Editor;
 using SharpE.Definitions.Project;
 using SharpE.MvvmTools.Properties;
@@ -18,6 +19,7 @@ namespace SharpE.BaseEditors.Image
     private readonly IEnumerable<string> m_supportedFiles = new List<string>{".png"};
     private System.Windows.Controls.Image m_image;
     private readonly Dictionary<IFileViewModel, double> m_zooms = new Dictionary<IFileViewModel, double>();
+    private readonly IObservableCollection<IMenuItemViewModel> m_menuItems = null;
 
     public string Name
     {
@@ -80,6 +82,11 @@ namespace SharpE.BaseEditors.Image
     public IEditor CreateNew()
     {
       return new ImageViewerViewModel();
+    }
+
+    public IObservableCollection<IMenuItemViewModel> MenuItems
+    {
+      get { return m_menuItems; }
     }
 
     public System.Windows.Controls.Image Image

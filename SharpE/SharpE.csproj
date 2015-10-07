@@ -127,8 +127,8 @@
     <Compile Include="Templats\Views\TempletDialogView.xaml.cs">
       <DependentUpon>TempletDialogView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\ContextMenu\ContextmenuItemViewModel.cs" />
     <Compile Include="ViewModels\ContextMenu\IContextMenuViewModel.cs" />
+    <Compile Include="ViewModels\ContextMenu\MenuItemViewModel.cs" />
     <Compile Include="ViewModels\ContextMenu\TabsContextMenuViewModel.cs" />
     <Compile Include="ViewModels\ContextMenu\TemplateContextMenuViewModel.cs" />
     <Compile Include="ViewModels\ContextMenu\SchemaContextMenuViewModel.cs" />

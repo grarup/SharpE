@@ -14,22 +14,22 @@ namespace SharpE.ViewModels.ContextMenu
   {
     private readonly MainViewModel m_mainViewModel;
     private readonly LayoutElementViewModel m_layoutElement;
-    private readonly List<ContextmenuItemViewModel> m_menuItems = new List<ContextmenuItemViewModel>();
-    private readonly ContextmenuItemViewModel m_closeAllContextmenuItemViewModel;
-    private readonly ContextmenuItemViewModel m_closeOthersContextmenuItemViewModel;
+    private readonly List<MenuItemViewModel> m_menuItems = new List<MenuItemViewModel>();
+    private readonly MenuItemViewModel m_closeAllMenuItemViewModel;
+    private readonly MenuItemViewModel m_closeOthersMenuItemViewModel;
 
     public TabsContextMenuViewModel(MainViewModel mainViewModel, LayoutElementViewModel layoutElement)
     {
       m_mainViewModel = mainViewModel;
       m_layoutElement = layoutElement;
-      m_menuItems.Add(new ContextmenuItemViewModel("Close", mainViewModel.CloseFileCommand, mainViewModel, "SelectedFile"));
-      m_closeAllContextmenuItemViewModel = new ContextmenuItemViewModel("Close all", new ManualCommand(() => mainViewModel.CloseAllFiles(false)));
-      m_menuItems.Add(m_closeAllContextmenuItemViewModel);
-      m_closeOthersContextmenuItemViewModel = new ContextmenuItemViewModel("Close others", new ManualCommand(() => mainViewModel.CloseAllFiles(true)));
-      m_menuItems.Add(m_closeOthersContextmenuItemViewModel);
+      m_menuItems.Add(new MenuItemViewModel("Close", mainViewModel.CloseFileCommand, mainViewModel, "SelectedFile"));
+      m_closeAllMenuItemViewModel = new MenuItemViewModel("Close all", new ManualCommand(() => mainViewModel.CloseAllFiles(false)));
+      m_menuItems.Add(m_closeAllMenuItemViewModel);
+      m_closeOthersMenuItemViewModel = new MenuItemViewModel("Close others", new ManualCommand(() => mainViewModel.CloseAllFiles(true)));
+      m_menuItems.Add(m_closeOthersMenuItemViewModel);
       m_layoutElement.OpenFiles.PropertyChanged += OpenfilesOnPropertyChanged;
-      m_menuItems.Add(new ContextmenuItemViewModel("Show in project tree", new ManualCommand(ShowInTree)));
-      m_menuItems.Add(new ContextmenuItemViewModel("Open containing folder", new ManualCommand(OpenContainingFolder)));
+      m_menuItems.Add(new MenuItemViewModel("Show in project tree", new ManualCommand(ShowInTree)));
+      m_menuItems.Add(new MenuItemViewModel("Open containing folder", new ManualCommand(OpenContainingFolder)));
     }
 
     private void OpenContainingFolder()
@@ -57,15 +57,15 @@ namespace SharpE.ViewModels.ContextMenu
       }
     }
 
-    public List<ContextmenuItemViewModel> MenuItems
+    public List<MenuItemViewModel> MenuItems
     {
       get { return m_menuItems; }
     }
 
     public void Refresh()
     {
-      m_closeAllContextmenuItemViewModel.IsVisable = m_layoutElement.OpenFiles.Count > 1;
-      m_closeOthersContextmenuItemViewModel.IsVisable = m_layoutElement.OpenFiles.Count > 1;
+      m_closeAllMenuItemViewModel.IsVisable = m_layoutElement.OpenFiles.Count > 1;
+      m_closeOthersMenuItemViewModel.IsVisable = m_layoutElement.OpenFiles.Count > 1;
     }
   }
 }

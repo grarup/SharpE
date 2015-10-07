@@ -34,7 +34,7 @@
                 <Setter Property="CommandParameter" Value="{Binding }"/>
                 <Setter Property="Header" Value="{Binding }"></Setter>
             </Style>
-            <Style x:Key="MvvmMenuItemStyle" TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}" d:DataContext="{d:DesignInstance contextMenu:ContextmenuItemViewModel}">
+            <Style x:Key="MvvmMenuItemStyle" TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}" d:DataContext="{d:DesignInstance contextMenu:MenuItemViewModel}">
                 <Setter Property="Command" Value="{Binding Path=Command}"/>
                 <Setter Property="CommandParameter" Value="{Binding Path=CommandParameter}"/>
                 <Setter Property="Header" Value="{Binding Path=Name}"></Setter>
@@ -72,8 +72,8 @@
                     <Separator/>
                     <MenuItem Header="Exit" Command="{Binding Path=ExitCommand}"/>
                 </MenuItem>
-                <MenuItem Header="Schema">
-                    <MenuItem Header="Generate" Command="{Binding Path=GenerateSchemaCommand}"></MenuItem>
+                <MenuItem Header="Tools" ItemsSource="{Binding Path=LayoutManager.ActiveLayoutElement.Editor.MenuItems}" ItemContainerStyle="{StaticResource MvvmMenuItemStyle}">
+
                 </MenuItem>
                 <MenuItem Header="Settings">
                     <MenuItem Header="General" Command="{Binding Path=OpenFileViewModelCommand}" CommandParameter="{Binding Path=Settings}"/>
@@ -105,7 +105,6 @@
                     </TreeView.InputBindings>
                     <TreeView.ContextMenu>
                         <ContextMenu DataContext="{Binding Path=PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}" ItemsSource="{Binding Path=CurrentTreeContextMenu.MenuItems}" ItemContainerStyle="{StaticResource MvvmMenuItemStyle}" Focusable="False">
-
                         </ContextMenu>
                     </TreeView.ContextMenu>
                     <TreeView.ItemTemplate>

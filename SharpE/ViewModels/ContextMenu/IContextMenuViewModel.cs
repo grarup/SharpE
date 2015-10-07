@@ -8,7 +8,7 @@ namespace SharpE.ViewModels.ContextMenu
 {
   public interface IContextMenuViewModel
   {
-    List<ContextmenuItemViewModel> MenuItems { get; }
+    List<MenuItemViewModel> MenuItems { get; }
     void Refresh();
   }
 }

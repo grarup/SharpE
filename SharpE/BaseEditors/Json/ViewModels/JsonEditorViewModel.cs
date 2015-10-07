@@ -21,8 +21,10 @@ using SharpE.Json.AutoComplet;
 using SharpE.Json.Data;
 using SharpE.Json.Schemas;
 using SharpE.MvvmTools.Collections;
+using SharpE.MvvmTools.Commands;
 using SharpE.MvvmTools.Exstensions;
 using SharpE.ViewModels;
+using SharpE.ViewModels.ContextMenu;
 using SharpE.ViewModels.Tree;
 
 namespace SharpE.BaseEditors.Json.ViewModels
@@ -71,10 +73,28 @@ namespace SharpE.BaseEditors.Json.ViewModels
       task.Start();
       Task task2 = new Task(UpdateAutoCompletTask);
       task2.Start();
+
+      m_menuItems = new ObservableCollection<IMenuItemViewModel>
+        {
+          new MenuItemViewModel("Generate schema", new ManualCommand(GenerateSchema))
+        };
     }
     #endregion
 
     #region private methods
+
+    private void GenerateSchema()
+    {
+      if (m_mainViewModel.LayoutManager.ActiveLayoutElement == null || m_mainViewModel.LayoutManager.ActiveLayoutElement.SelectedFile == null || m_mainViewModel.LayoutManager.ActiveLayoutElement.SelectedFile.Exstension != ".json")
+        return;
+      JsonException jsonException;
+      JsonNode jsonNode = (JsonNode)JsonHelperFunctions.Parse(m_mainViewModel.LayoutManager.ActiveLayoutElement.SelectedFile.GetContent<string>(), out jsonException);
+      if (jsonException != null)
+        return;
+      JsonNode schemaNode = SchemaHelper.GenerateSchema(jsonNode);
+      m_mainViewModel.CreateNewFile();
+      m_mainViewModel.LayoutManager.ActiveLayoutElement.SelectedFile.SetContent(schemaNode.ToString());
+    }
     private string CorrectIndent(string text)
     {
       Stack<char> bracketOrder = new Stack<char>();
