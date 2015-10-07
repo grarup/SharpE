@@ -57,6 +57,7 @@ namespace SharpE.ViewModels.Layout
         else
         {
           Editor = m_mainViewModel.EditorManager.GetEditor(null, m_index);
+          Editor.File = null;
         }
         MainViewModel.SaveFileCommand.Update();
         OnPropertyChanged();

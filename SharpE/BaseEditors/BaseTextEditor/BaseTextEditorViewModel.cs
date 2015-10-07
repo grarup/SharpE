@@ -180,6 +180,10 @@ namespace SharpE.BaseEditors.BaseTextEditor
             m_view.TextEditor.IsReadOnly = m_file.IsReadonly;
           }
         }
+        else
+        {
+          InitFromFile("");
+        }
         FocusTag = EditFocusTag.Editor;
         OnPropertyChanged();
       }

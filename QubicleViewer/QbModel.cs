@@ -137,7 +137,6 @@ namespace SharpE.QubicleViewer
       }
     }
 
-
     public Model3DGroup Model3DGroup
     {
       get { return m_model3DGroup; }
@@ -268,7 +267,6 @@ namespace SharpE.QubicleViewer
       double max = m_parts.Max(n => Math.Max(n.Width, n.Height));
       return max * 3 * m_scale;
     }
-
 
     public Point3D DeterminCenter()
     {
