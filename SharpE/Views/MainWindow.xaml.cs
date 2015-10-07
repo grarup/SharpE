@@ -11,7 +11,6 @@ namespace SharpE.Views
     public MainWindow()
     {
       InitializeComponent();
-      DataContext = new MainViewModel();
     }
   }
 }

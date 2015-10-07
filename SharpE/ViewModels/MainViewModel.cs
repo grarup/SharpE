@@ -21,6 +21,7 @@ using SharpE.ViewModels.ContextMenu;
 using SharpE.ViewModels.Dialogs;
 using SharpE.ViewModels.Layout;
 using SharpE.ViewModels.Tree;
+using SharpE.Views;
 
 namespace SharpE.ViewModels
 {
@@ -73,11 +74,14 @@ namespace SharpE.ViewModels
     private string m_runPath;
     private string m_runParameters;
 
+    private readonly MainWindow m_window;
+
     #endregion
 
     #region constructor
     public MainViewModel()
     {
+      m_window = new MainWindow {DataContext = this};
       m_layoutManager = new LayoutManager(this);
 
       m_tabTrees = Enum.GetValues(typeof(TabTrees)).Cast<TabTrees>().ToList();
@@ -114,8 +118,6 @@ namespace SharpE.ViewModels
       {
         Init();
       }
-
-
     }
 
     private void DeleteSelectedNode()
@@ -168,7 +170,6 @@ namespace SharpE.ViewModels
       return newDirectory;
     }
 
-
     #endregion
 
     #region private methods
@@ -195,8 +196,6 @@ namespace SharpE.ViewModels
       fileViewModel.IsRenaming = true;
       return fileViewModel;
     }
-
-
 
     private void OpenFile()
     {
@@ -826,6 +825,11 @@ namespace SharpE.ViewModels
     public LayoutManager LayoutManager
     {
       get { return m_layoutManager; }
+    }
+
+    public MainWindow Window
+    {
+      get { return m_window; }
     }
     #endregion
   }

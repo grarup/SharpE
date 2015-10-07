@@ -64,19 +64,7 @@ namespace SharpE.QubicleViewer
         if (m_view == null)
         {
           m_view = new QubicleView { DataContext = this };
-          Task task = new Task(() =>
-          {
-            QbModel model = new QbModel(Resources.Loading);
-            model.CalcMesh();
-            model.Generate3DModel(m_view.Dispatcher);
-            model.Zoom = 200;
-            model.AngleXaxis = -0.15;
-            model.AngleZaxis = -0.2;
-            model.Center = new Point3D(19,0,5);
-
-            m_loadingModelGroup = model;
-          });
-          task.Start();
+          LoadModel();
         }
         return m_view;
       }
@@ -89,34 +77,38 @@ namespace SharpE.QubicleViewer
       {
         if (Equals(value, m_file)) return;
         m_file = value;
-        if (m_file == null) return;
-        bool loadDone = false;
-        lock (m_cashcedModels)
+        LoadModel();
+        OnPropertyChanged();
+      }
+    }
+
+    private void LoadModel()
+    {
+      if (m_file == null || m_view == null) return;
+      bool loadDone = false;
+      lock (m_cashcedModels)
+      {
+        if (m_cashcedModels.ContainsKey(m_file))
         {
-          if (m_cashcedModels.ContainsKey(m_file))
-          {
-            if ((System.IO.File.GetLastWriteTime(m_file.Path) - m_cashcedModels[m_file].LoadTime).TotalMilliseconds < 0)
+          if ((System.IO.File.GetLastWriteTime(m_file.Path) - m_cashcedModels[m_file].LoadTime).TotalMilliseconds < 0)
 
             QbModel = m_cashcedModels[m_file];
-            loadDone = true;
-          }
+          loadDone = true;
         }
-        if (!loadDone)
+      }
+      if (!loadDone)
+      {
+        if (m_loadingModelGroup != null)
         {
-          if (m_loadingModelGroup != null)
-          {
-            m_loadingTimer = new Timer(state =>
-            {
-              QbModel = m_loadingModelGroup;
-            }, null, 200, Timeout.Infinite);
-          }
+          m_loadingTimer = new Timer(state => { QbModel = m_loadingModelGroup; }, null, 200, Timeout.Infinite);
+        }
 
-          if (m_cancellationTokenSource != null)
-            m_cancellationTokenSource.Cancel();
-          CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-          m_cancellationTokenSource = cancellationTokenSource;
-          byte[] data = m_file.GetContent<byte[]>();
-          Task task = new Task(() =>
+        if (m_cancellationTokenSource != null)
+          m_cancellationTokenSource.Cancel();
+        CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+        m_cancellationTokenSource = cancellationTokenSource;
+        byte[] data = m_file.GetContent<byte[]>();
+        Task task = new Task(() =>
           {
             QbModel model = new QbModel(data);
             if (cancellationTokenSource.Token.IsCancellationRequested)
@@ -147,9 +139,7 @@ namespace SharpE.QubicleViewer
               return;
             QbModel = model;
           });
-          task.Start();
-        }
-        OnPropertyChanged();
+        task.Start();
       }
     }
 
