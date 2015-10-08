@@ -18,7 +18,7 @@ namespace SharpE.BaseEditors.Image
   {
     private UIElement m_view;
     private IFileViewModel m_file;
-    private readonly IEnumerable<string> m_supportedFiles = new List<string> { ".png" };
+    private readonly IEnumerable<string> m_supportedFiles = new List<string> { ".png", ".jpg", ".jpeg", ".gif", ".tiff", ".bmp" };
     private System.Windows.Controls.Image m_image;
     private double m_zoom;
     private readonly IObservableCollection<IMenuItemViewModel> m_menuItems = null;
@@ -131,7 +131,7 @@ namespace SharpE.BaseEditors.Image
       {
         if (m_view == null)
         {
-          Image = new System.Windows.Controls.Image { VerticalAlignment = VerticalAlignment.Top, HorizontalAlignment = HorizontalAlignment.Left, Stretch = Stretch.None };
+          m_image = new System.Windows.Controls.Image { VerticalAlignment = VerticalAlignment.Top, HorizontalAlignment = HorizontalAlignment.Left, Stretch = Stretch.None };
           m_view = new ImageViewerView { DataContext = this };
           if (m_file != null)
             UpdateImage();
@@ -207,7 +207,6 @@ namespace SharpE.BaseEditors.Image
     public System.Windows.Controls.Image Image
     {
       get { return m_image; }
-      set { m_image = value; }
     }
 
     public double Zoom

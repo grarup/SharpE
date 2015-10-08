@@ -160,7 +160,8 @@ namespace SharpE.BaseEditors.BaseTextEditor
         {
           m_file.ContentChanged -= FileOnPropertyChanged;
           m_file.SetTag("offset", m_offset);
-          m_file.SetTag("scroll", m_view.TextEditor.TextArea.TextView.ScrollOffset);
+          if (m_view != null)
+            m_file.SetTag("scroll", m_view.TextEditor.TextArea.TextView.ScrollOffset);
         }
         m_file = value;
         if (m_file != null)

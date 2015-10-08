@@ -82,7 +82,6 @@ namespace SharpE.BaseEditors.Json.ViewModels
     #endregion
 
     #region private methods
-
     private void GenerateSchema()
     {
       if (m_mainViewModel.LayoutManager.ActiveLayoutElement == null || m_mainViewModel.LayoutManager.ActiveLayoutElement.SelectedFile == null || m_mainViewModel.LayoutManager.ActiveLayoutElement.SelectedFile.Exstension != ".json")
@@ -95,6 +94,7 @@ namespace SharpE.BaseEditors.Json.ViewModels
       m_mainViewModel.CreateNewFile();
       m_mainViewModel.LayoutManager.ActiveLayoutElement.SelectedFile.SetContent(schemaNode.ToString());
     }
+
     private string CorrectIndent(string text)
     {
       Stack<char> bracketOrder = new Stack<char>();
@@ -181,52 +181,6 @@ namespace SharpE.BaseEditors.Json.ViewModels
           Thread.Sleep(100);
         }
       }
-    }
-
-    protected override Schema GetSettingsSchema(SchemaManager schemaManager)
-    {
-      return new Schema(Properties.Resources.jsoneditor_schema, schemaManager);
-    }
-
-    protected override IFileViewModel GetSettings()
-    {
-      if (!System.IO.File.Exists(Properties.Settings.Default.SettingPath + "\\jsonedit.settings.json"))
-        System.IO.File.WriteAllBytes(Properties.Settings.Default.SettingPath + "\\jsonedit.settings.json", Properties.Resources.jsonedit_settings);
-      return m_mainViewModel.GetSetting(Properties.Settings.Default.SettingPath + "\\jsonedit.settings.json");
-    }
-
-    public void IndentAll()
-    {
-      int offset = m_offset;
-      m_textDocument.Text = CorrectIndent(m_text);
-      m_caret.Offset = Math.Min(m_text.Length, offset);
-    }
-
-    //private void IndentLine(int start)
-    //{
-    //  int cursorStart = start;
-    //  int lasttext = start;
-    //  int index = m_cursorPosition;
-    //  char c = m_text[index];
-    //  while (index > 0 && c != '\n')
-    //  {
-    //    if (!Char.IsWhiteSpace(c))
-    //      lasttext = index;
-    //    index--;
-    //    c = m_text[index];
-    //  }
-    //  int indent = lasttext - (index + 1);
-    //  int depth = m_path.Count * 2 + 2;
-    //  if (indent > depth)
-    //    RemoveText(index + 1, indent - depth);
-    //  else
-    //    InsertText(new string(' ', depth - indent), index + 1);
-    //  CursorPosition = cursorStart - (indent - depth);
-    //}
-
-    public void ShowAutoComplete()
-    {
-      UpdateAutoCompletList = true;
     }
 
     private void UpdateAutoCompletTask()
@@ -428,6 +382,18 @@ namespace SharpE.BaseEditors.Json.ViewModels
           textCompositionEventArgs.Handled = true;
         }
       }
+    }
+
+    protected override Schema GetSettingsSchema(SchemaManager schemaManager)
+    {
+      return new Schema(Properties.Resources.jsoneditor_schema, schemaManager);
+    }
+
+    protected override IFileViewModel GetSettings()
+    {
+      if (!System.IO.File.Exists(Properties.Settings.Default.SettingPath + "\\jsonedit.settings.json"))
+        System.IO.File.WriteAllBytes(Properties.Settings.Default.SettingPath + "\\jsonedit.settings.json", Properties.Resources.jsonedit_settings);
+      return m_mainViewModel.GetSetting(Properties.Settings.Default.SettingPath + "\\jsonedit.settings.json");
     }
 
     protected override void FileChangedExternaley(string text)
@@ -773,6 +739,18 @@ namespace SharpE.BaseEditors.Json.ViewModels
     #endregion
 
     #region public methods
+    public void IndentAll()
+    {
+      int offset = m_offset;
+      m_textDocument.Text = CorrectIndent(m_text);
+      m_caret.Offset = Math.Min(m_text.Length, offset);
+    }
+
+    public void ShowAutoComplete()
+    {
+      UpdateAutoCompletList = true;
+    }
+
     public void OpenFile()
     {
       if (m_schema == null) return;
