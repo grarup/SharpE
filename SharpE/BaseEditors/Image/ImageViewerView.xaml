@@ -53,31 +53,23 @@
         <StackPanel Orientation="Horizontal" Grid.Row="1">
             <Slider Minimum="0.1" Maximum="5" SmallChange="0.1" LargeChange="0.5" Value="{Binding Path=Zoom}" Width="100" HorizontalAlignment="Left" Margin="5"></Slider>
             <Button Command="{Binding Path=RotateRightCommand}" Style="{StaticResource IconButtonNoFrame}" Width="30" Height="30">
-                    <Canvas Width="20" Height="20">
                         <Path Height="20" Width="20" Stretch="Fill" Fill="#FAAA" Data="F1 M 57,57L 42,57L 42,42L 47.1924,47.1924C 49.5449,44.8399 51,41.5899 51,38C 51,30.8203 45.1797,25 38,25C 30.8203,25 25,30.8203 25,38C 25,42.6137 27.4035,46.6661 31.0266,48.9734L 26.7138,53.2862C 22.0342,49.8254 19,44.2671 19,38C 19,27.5066 27.5066,19 38,19C 48.4934,19 57,27.5066 57,38C 57,43.2467 54.8734,47.9967 51.435,51.435L 57,57 Z "/>
-                    </Canvas>
             </Button>
-            <Button Command="{Binding Path=RotateLeftCommand}" Width="30" Style="{StaticResource IconButtonNoFrame}">
-                <Canvas Width="20" Height="20" >
+            <Button Command="{Binding Path=RotateLeftCommand}" Width="30" Height="30" Style="{StaticResource IconButtonNoFrame}">
                     <Path Width="20" Height="20" Stretch="Fill" Fill="#FAAA" Data="F1 M 19,57L 34,57L 34,42L 28.8076,47.1924C 26.4551,44.8399 25,41.5899 25,38C 25,30.8203 30.8203,25 38,25C 45.1797,25 51,30.8203 51,38C 51,42.6137 48.5965,46.6661 44.9734,48.9734L 49.2862,53.2862C 53.9658,49.8254 57,44.2671 57,38C 57,27.5066 48.4934,19 38,19C 27.5066,19 19,27.5066 19,38C 19,43.2467 21.1266,47.9967 24.565,51.435L 19,57 Z "/>
-                </Canvas>
             </Button>
-            <Border Padding="2" Margin="10,2" >
+            <Border Margin="10,0" >
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Resize:" Foreground="{StaticResource ForgroundBrush}" VerticalAlignment="Center"></TextBlock>
-                    <TextBox Text="{Binding Path=Width}" MinWidth="50" VerticalContentAlignment="Center" TextAlignment="Right" Margin="3"></TextBox>
-                    <TextBox Text="{Binding Path=Height}" MinWidth="50" VerticalContentAlignment="Center" TextAlignment="Right" Margin="3"></TextBox>
-                    <Button Command="{Binding Path=ApplySizeCommand}" Margin="3" Style="{StaticResource IconButtonNoFrame}">
-                        <Canvas Width="20" Height="20" >
+                    <TextBox Text="{Binding Path=Width}" MinWidth="50" VerticalContentAlignment="Center" TextAlignment="Right" Margin="2,6"></TextBox>
+                    <TextBox Text="{Binding Path=Height}" MinWidth="50" VerticalContentAlignment="Center" TextAlignment="Right" Margin="2,6"></TextBox>
+                    <Button Command="{Binding Path=ApplySizeCommand}" Style="{StaticResource IconButtonNoFrame}" Width="30" Height="30">
                             <Path Width="20" Height="20" Stretch="Fill" Fill="#FAAA" Data="F1 M 23.7501,33.25L 34.8334,44.3333L 52.2499,22.1668L 56.9999,26.9168L 34.8334,53.8333L 19.0001,38L 23.7501,33.25 Z "/>
-                        </Canvas>
                     </Button>
                 </StackPanel>
-            </Border>
-            <Button Command="{Binding Path=CropCommand}" Style="{StaticResource IconButtonNoFrame}">
-                <Canvas Width="20" Height="20">
+           </Border>
+            <Button Command="{Binding Path=CropCommand}" Style="{StaticResource IconButtonNoFrame}" Width="30" Height="30">
                     <Path Width="20" Height="20"  Stretch="Fill" Fill="#FAAA" Data="F1 M 17.4167,53.8333L 17.4167,49.0833L 22.1667,49.0833L 22.1667,28.5L 17.4167,28.5L 17.4167,23.75L 22.1667,23.75L 22.1667,19L 26.9167,19L 26.9167,23.75L 48.6875,23.75L 53.4375,19L 57,22.5625L 52.25,27.3125L 52.25,49.0833L 57,49.0833L 57,53.8333L 52.25,53.8333L 52.25,58.5833L 47.5,58.5833L 47.5,53.8333L 26.9167,53.8333L 26.9167,58.5833L 22.1667,58.5833L 22.1667,53.8333L 17.4167,53.8333 Z M 30.4792,49.0833L 47.5,49.0833L 47.5,32.0625L 30.4792,49.0833 Z M 26.9167,45.5208L 43.9375,28.5L 26.9167,28.5L 26.9167,45.5208 Z "/>
-                </Canvas>
             </Button>
         </StackPanel>
     </Grid>
