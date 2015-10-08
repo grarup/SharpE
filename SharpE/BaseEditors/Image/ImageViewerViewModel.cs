@@ -134,13 +134,13 @@ namespace SharpE.BaseEditors.Image
           Image = new System.Windows.Controls.Image { VerticalAlignment = VerticalAlignment.Top, HorizontalAlignment = HorizontalAlignment.Left, Stretch = Stretch.None };
           m_view = new ImageViewerView { DataContext = this };
           if (m_file != null)
-            UpdateImage(Rotation.Rotate0);
+            UpdateImage();
         }
         return m_view;
       }
     }
 
-    private void UpdateImage(Rotation rotation, int? width = null, int? height = null, Int32Rect? cropRect = null)
+    private void UpdateImage(Rotation rotation = Rotation.Rotate0, int? width = null, int? height = null, Int32Rect? cropRect = null)
     {
       BitmapImage bitmap = new BitmapImage();
       bitmap.BeginInit();
@@ -167,17 +167,26 @@ namespace SharpE.BaseEditors.Image
       set
       {
         if (m_file != null)
+        {
           m_file.SetTag("zoom", m_zoom);
+          m_file.ContentChanged -= FileOnContentChanged;
+        }
         m_file = value;
         if (m_file != null)
         {
           double? zoom = m_file.GetTag("zoom") as double?;
           Zoom = zoom.HasValue ? zoom.Value : 1;
           if (m_view != null)
-            UpdateImage(Rotation.Rotate0);
+            UpdateImage();
+          m_file.ContentChanged += FileOnContentChanged;
         }
         OnPropertyChanged();
       }
+    }
+
+    private void FileOnContentChanged(IFileViewModel fileViewModel)
+    {
+      UpdateImage();
     }
 
     public IEnumerable<string> SupportedFiles
