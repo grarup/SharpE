@@ -106,9 +106,21 @@ namespace SharpE.ViewModels.Tree
 
       HasUnsavedChanges = false;
       m_lastWriteTime = DateTime.Now;
-      StreamWriter streamWriter = File.CreateText(Path);
-      streamWriter.Write(m_content);
-      streamWriter.Close();
+      Stream stream = m_content as Stream;
+      if (stream != null)
+      {
+        stream.Position = 0;
+        Stream outStream = File.Create(Path,(int) stream.Length);
+        byte[] data = new byte[stream.Length];
+        stream.Read(data, 0, (int) stream.Length);
+        outStream.Write(data,0,data.Length);
+      }
+      else
+      {
+        StreamWriter streamWriter = File.CreateText(Path);
+        streamWriter.Write(m_content);
+        streamWriter.Close();
+      }
     }
 
     public void SetTag(string key, object tag)
@@ -144,7 +156,7 @@ namespace SharpE.ViewModels.Tree
         }
         else if (typeof(T) == typeof(Stream))
         {
-          m_content = File.OpenRead(Path);
+          m_content = new MemoryStream(File.ReadAllBytes(Path));
         }
         else if (typeof(T) == typeof(byte[]))
         {
