@@ -18,5 +18,6 @@ namespace SharpE.Definitions.Project
     event Action<IFileViewModel> FileChangedOnDisk;
     bool IsBasedOnCurrentFile();
     void Reset();
+    void Reload();
   }
 }

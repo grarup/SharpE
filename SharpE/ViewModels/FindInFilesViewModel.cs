@@ -393,5 +393,10 @@ namespace SharpE.ViewModels
     {
       m_editor.Document.Text = "";
     }
+
+    public void Reload()
+    {
+      
+    }
   }
 }

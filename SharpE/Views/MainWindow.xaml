@@ -10,7 +10,6 @@
         xmlns:converters="clr-namespace:SharpE.MvvmTools.Converters;assembly=MvvmTools"
         xmlns:project="clr-namespace:SharpE.Definitions.Project;assembly=Definitions"
         xmlns:contextMenu="clr-namespace:SharpE.ViewModels.ContextMenu"
-        xmlns:controls1="clr-namespace:Common.MedRxCommonControls.Controls;assembly=MvvmTools"
         mc:Ignorable="d"
         Title="{Binding Path=Title}" Height="1080" Width="1920" 
         d:DataContext="{d:DesignInstance viewModels:MainViewModel}"

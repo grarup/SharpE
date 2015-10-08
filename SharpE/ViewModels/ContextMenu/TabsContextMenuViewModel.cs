@@ -22,7 +22,8 @@ namespace SharpE.ViewModels.ContextMenu
     {
       m_mainViewModel = mainViewModel;
       m_layoutElement = layoutElement;
-      m_menuItems.Add(new MenuItemViewModel("Close", mainViewModel.CloseFileCommand, mainViewModel, "SelectedFile"));
+      m_menuItems.Add(new MenuItemViewModel("Close", mainViewModel.CloseFileCommand, layoutElement, "SelectedFile"));
+      m_menuItems.Add(new MenuItemViewModel("Revert", new ManualCommand(() => layoutElement.SelectedFile.Reload())));
       m_closeAllMenuItemViewModel = new MenuItemViewModel("Close all", new ManualCommand(() => mainViewModel.CloseAllFiles(false)));
       m_menuItems.Add(m_closeAllMenuItemViewModel);
       m_closeOthersMenuItemViewModel = new MenuItemViewModel("Close others", new ManualCommand(() => mainViewModel.CloseAllFiles(true)));
